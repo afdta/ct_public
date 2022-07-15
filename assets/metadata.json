@@ -1,0 +1,17 @@
+{
+  "allvars": ["poverty_x3", "gdp_pc", "median_wage", "inequality", "urate", "f_lfp", "edu", "parent_01", "teen_birth"],
+  "varnames": {
+    "poverty_x3": "Poverty levels",
+    "poverty": "In poverty",
+    "low_income": "Los income",
+    "deep_poverty": "Deep poverty",
+    "gdp_pc": "GDP per capita",
+    "median_wage": "Median wage",
+    "inequality": "Inequality",
+    "urate": "Unemployment rate",
+    "f_lfp": "Female labor force participation rate",
+    "edu": "Percengate of population... (what is edu var)?",
+    "parent_01": "Single parent (0 or 1)",
+    "teen_birth": "Teen birth rate"
+  }
+}

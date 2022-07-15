@@ -60,7 +60,7 @@
       }
     }
 
-    return new Selection(subgroups, this._parents);
+    return new Selection$1(subgroups, this._parents);
   }
 
   // Given something array like (or null), returns something that is strictly an
@@ -102,7 +102,7 @@
       }
     }
 
-    return new Selection(subgroups, parents);
+    return new Selection$1(subgroups, parents);
   }
 
   function matcher(selector) {
@@ -162,7 +162,7 @@
       }
     }
 
-    return new Selection(subgroups, this._parents);
+    return new Selection$1(subgroups, this._parents);
   }
 
   function sparse(update) {
@@ -170,7 +170,7 @@
   }
 
   function selection_enter() {
-    return new Selection(this._enter || this._groups.map(sparse), this._parents);
+    return new Selection$1(this._enter || this._groups.map(sparse), this._parents);
   }
 
   function EnterNode(parent, datum) {
@@ -302,7 +302,7 @@
       }
     }
 
-    update = new Selection(update, parents);
+    update = new Selection$1(update, parents);
     update._enter = enter;
     update._exit = exit;
     return update;
@@ -321,7 +321,7 @@
   }
 
   function selection_exit() {
-    return new Selection(this._exit || this._groups.map(sparse), this._parents);
+    return new Selection$1(this._exit || this._groups.map(sparse), this._parents);
   }
 
   function selection_join(onenter, onupdate, onexit) {
@@ -355,7 +355,7 @@
       merges[j] = groups0[j];
     }
 
-    return new Selection(merges, this._parents);
+    return new Selection$1(merges, this._parents);
   }
 
   function selection_order() {
@@ -388,7 +388,7 @@
       sortgroup.sort(compareNode);
     }
 
-    return new Selection(sortgroups, this._parents).order();
+    return new Selection$1(sortgroups, this._parents).order();
   }
 
   function ascending$4(a, b) {
@@ -439,31 +439,31 @@
     return this;
   }
 
-  function attrRemove(name) {
+  function attrRemove$1(name) {
     return function() {
       this.removeAttribute(name);
     };
   }
 
-  function attrRemoveNS(fullname) {
+  function attrRemoveNS$1(fullname) {
     return function() {
       this.removeAttributeNS(fullname.space, fullname.local);
     };
   }
 
-  function attrConstant(name, value) {
+  function attrConstant$1(name, value) {
     return function() {
       this.setAttribute(name, value);
     };
   }
 
-  function attrConstantNS(fullname, value) {
+  function attrConstantNS$1(fullname, value) {
     return function() {
       this.setAttributeNS(fullname.space, fullname.local, value);
     };
   }
 
-  function attrFunction(name, value) {
+  function attrFunction$1(name, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.removeAttribute(name);
@@ -471,7 +471,7 @@
     };
   }
 
-  function attrFunctionNS(fullname, value) {
+  function attrFunctionNS$1(fullname, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
@@ -490,9 +490,9 @@
     }
 
     return this.each((value == null
-        ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
-        ? (fullname.local ? attrFunctionNS : attrFunction)
-        : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
+        ? (fullname.local ? attrRemoveNS$1 : attrRemove$1) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$1 : attrFunction$1)
+        : (fullname.local ? attrConstantNS$1 : attrConstant$1)))(fullname, value));
   }
 
   function defaultView(node) {
@@ -501,19 +501,19 @@
         || node.defaultView; // node is a Document
   }
 
-  function styleRemove(name) {
+  function styleRemove$1(name) {
     return function() {
       this.style.removeProperty(name);
     };
   }
 
-  function styleConstant(name, value, priority) {
+  function styleConstant$1(name, value, priority) {
     return function() {
       this.style.setProperty(name, value, priority);
     };
   }
 
-  function styleFunction(name, value, priority) {
+  function styleFunction$1(name, value, priority) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.style.removeProperty(name);
@@ -524,9 +524,9 @@
   function selection_style(name, value, priority) {
     return arguments.length > 1
         ? this.each((value == null
-              ? styleRemove : typeof value === "function"
-              ? styleFunction
-              : styleConstant)(name, value, priority == null ? "" : priority))
+              ? styleRemove$1 : typeof value === "function"
+              ? styleFunction$1
+              : styleConstant$1)(name, value, priority == null ? "" : priority))
         : styleValue(this.node(), name);
   }
 
@@ -644,13 +644,13 @@
     this.textContent = "";
   }
 
-  function textConstant(value) {
+  function textConstant$1(value) {
     return function() {
       this.textContent = value;
     };
   }
 
-  function textFunction(value) {
+  function textFunction$1(value) {
     return function() {
       var v = value.apply(this, arguments);
       this.textContent = v == null ? "" : v;
@@ -661,8 +661,8 @@
     return arguments.length
         ? this.each(value == null
             ? textRemove : (typeof value === "function"
-            ? textFunction
-            : textConstant)(value))
+            ? textFunction$1
+            : textConstant$1)(value))
         : this.node().textContent;
   }
 
@@ -867,17 +867,21 @@
 
   var root = [null];
 
-  function Selection(groups, parents) {
+  function Selection$1(groups, parents) {
     this._groups = groups;
     this._parents = parents;
+  }
+
+  function selection() {
+    return new Selection$1([[document.documentElement]], root);
   }
 
   function selection_selection() {
     return this;
   }
 
-  Selection.prototype = {
-    constructor: Selection,
+  Selection$1.prototype = selection.prototype = {
+    constructor: Selection$1,
     select: selection_select,
     selectAll: selection_selectAll,
     selectChild: selection_selectChild,
@@ -917,8 +921,8 @@
 
   function select$1(selector) {
     return typeof selector === "string"
-        ? new Selection([[document.querySelector(selector)]], [document.documentElement])
-        : new Selection([[selector]], root);
+        ? new Selection$1([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$1([[selector]], root);
   }
 
   function accessor (fn, fields, name) {
@@ -1026,7 +1030,7 @@
     return accessor((opt && opt.get || getter)(path), [field], name || field);
   }
 
-  const id = field$1('id');
+  const id$1 = field$1('id');
   const identity$6 = accessor(_ => _, [], 'identity');
   const zero$3 = accessor(() => 0, [], 'zero');
   const one$2 = accessor(() => 1, [], 'one');
@@ -1184,7 +1188,7 @@
     return pan(domain, delta, symlog$1(constant), symexp(constant));
   }
 
-  function zoom$1(domain, anchor, scale, lift, ground) {
+  function zoom(domain, anchor, scale, lift, ground) {
     const d0 = lift(domain[0]),
           d1 = lift(peek$1(domain)),
           da = anchor != null ? lift(anchor) : (d0 + d1) / 2;
@@ -1192,17 +1196,17 @@
   }
 
   function zoomLinear(domain, anchor, scale) {
-    return zoom$1(domain, anchor, scale, toNumber, identity$6);
+    return zoom(domain, anchor, scale, toNumber, identity$6);
   }
   function zoomLog(domain, anchor, scale) {
     const sign = Math.sign(domain[0]);
-    return zoom$1(domain, anchor, scale, log$4(sign), exp$2(sign));
+    return zoom(domain, anchor, scale, log$4(sign), exp$2(sign));
   }
   function zoomPow(domain, anchor, scale, exponent) {
-    return zoom$1(domain, anchor, scale, pow$4(exponent), pow$4(1 / exponent));
+    return zoom(domain, anchor, scale, pow$4(exponent), pow$4(1 / exponent));
   }
   function zoomSymlog(domain, anchor, scale, constant) {
-    return zoom$1(domain, anchor, scale, symlog$1(constant), symexp(constant));
+    return zoom(domain, anchor, scale, symlog$1(constant), symexp(constant));
   }
 
   function quarter(date) {
@@ -4793,11 +4797,11 @@
     return typeof Buffer === 'function' && isFunction(Buffer.isBuffer) ? Buffer.isBuffer(_) : false;
   }
 
-  function json(data, format) {
+  function json$1(data, format) {
     const prop = format && format.property ? field$1(format.property) : identity$6;
     return isObject(data) && !isBuffer(data) ? parseJSON(prop(data), format) : prop(JSON.parse(data));
   }
-  json.responseType = 'json';
+  json$1.responseType = 'json';
 
   function parseJSON(data, format) {
     if (!isArray(data) && isIterable(data)) {
@@ -4813,7 +4817,7 @@
   };
   function topojson(data, format) {
     let method, object, property, filter;
-    data = json(data, format);
+    data = json$1(data, format);
 
     if (format && format.feature) {
       method = feature;
@@ -4835,7 +4839,7 @@
     dsv: dsv,
     csv: delimitedFormat(','),
     tsv: delimitedFormat('\t'),
-    json: json,
+    json: json$1,
     topojson: topojson
   };
   function formats$1(name, reader) {
@@ -5366,7 +5370,7 @@
      * @return {UniqueList}
      */
     targets() {
-      return this._targets || (this._targets = UniqueList(id));
+      return this._targets || (this._targets = UniqueList(id$1));
     },
 
     /**
@@ -5683,7 +5687,7 @@
     _apply: identity$6,
 
     targets() {
-      return this._targets || (this._targets = UniqueList(id));
+      return this._targets || (this._targets = UniqueList(id$1));
     },
 
     consume(_) {
@@ -6595,7 +6599,7 @@
 
     df._touched.forEach(op => df._enqueue(op, true));
 
-    df._touched = UniqueList(id);
+    df._touched = UniqueList(id$1);
     let count = 0,
         op,
         next,
@@ -6993,7 +6997,7 @@
     } catch (e) {// do nothing if loader module is unavailable
     }
 
-    this._touched = UniqueList(id);
+    this._touched = UniqueList(id$1);
     this._input = {};
     this._pulse = null;
     this._heap = Heap((a, b) => a.qrank - b.qrank);
@@ -7152,10 +7156,10 @@
    * @param {Operator} [source] - The operator from which to receive pulses.
    */
 
-  function Transform(init, params) {
+  function Transform$1(init, params) {
     Operator.call(this, init, null, params);
   }
-  inherits(Transform, Operator, {
+  inherits(Transform$1, Operator, {
     /**
      * Overrides {@link Operator.evaluate} for transform operators.
      * Internally, this method calls {@link evaluate} to perform processing.
@@ -8637,7 +8641,7 @@
     return Object.values(map).sort(compareIndex);
   }
 
-  function init() {
+  function init$1() {
     this.valid = 0;
     this.missing = 0;
 
@@ -8668,7 +8672,7 @@
     this._ops.forEach(op => op.rem(this, v, t));
   }
 
-  function set$4(t) {
+  function set$5(t) {
     this._out.forEach(op => t[op.out] = op.value(this));
 
     return t;
@@ -8686,10 +8690,10 @@
       this.init();
     }
 
-    ctr.prototype.init = init;
+    ctr.prototype.init = init$1;
     ctr.prototype.add = add$2;
     ctr.prototype.rem = rem;
-    ctr.prototype.set = set$4;
+    ctr.prototype.set = set$5;
     ctr.prototype.get = get;
     ctr.fields = agg.map(op => op.out);
     return ctr;
@@ -8847,7 +8851,7 @@
    */
 
   function Aggregate$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
     this._adds = []; // array of added output tuples
 
     this._mods = []; // array of modified output tuples
@@ -8914,7 +8918,7 @@
       'type': 'field'
     }]
   };
-  inherits(Aggregate$1, Transform, {
+  inherits(Aggregate$1, Transform$1, {
     transform(_, pulse) {
       const aggr = this,
             out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
@@ -9230,7 +9234,7 @@
    */
 
   function Bin(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Bin.Definition = {
     'type': 'Bin',
@@ -9296,7 +9300,7 @@
       'default': ['bin0', 'bin1']
     }]
   };
-  inherits(Bin, Transform, {
+  inherits(Bin, Transform$1, {
     transform(_, pulse) {
       const band = _.interval !== false,
             bins = this._bins(_),
@@ -9400,7 +9404,7 @@
    */
 
   function Collect$1(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
   Collect$1.Definition = {
     'type': 'Collect',
@@ -9412,7 +9416,7 @@
       'type': 'compare'
     }]
   };
-  inherits(Collect$1, Transform, {
+  inherits(Collect$1, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.ALL),
             list = SortedList(tupleid, this.value, out.materialize(out.ADD).add),
@@ -9460,7 +9464,7 @@
    */
 
   function CountPattern(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   CountPattern.Definition = {
     'type': 'CountPattern',
@@ -9508,7 +9512,7 @@
     return text.match(match);
   }
 
-  inherits(CountPattern, Transform, {
+  inherits(CountPattern, Transform$1, {
     transform(_, pulse) {
       const process = update => tuple => {
         var tokens = tokenize(get(tuple), _.case, match) || [],
@@ -9601,7 +9605,7 @@
    */
 
   function Cross(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Cross.Definition = {
     'type': 'Cross',
@@ -9619,7 +9623,7 @@
       'default': ['a', 'b']
     }]
   };
-  inherits(Cross, Transform, {
+  inherits(Cross, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE),
             as = _.as || ['a', 'b'],
@@ -9741,7 +9745,7 @@
    */
 
   function Density(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   const distributions = [{
     'key': {
@@ -9851,7 +9855,7 @@
       'default': ['value', 'density']
     }]
   };
-  inherits(Density, Transform, {
+  inherits(Density, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
 
@@ -9938,7 +9942,7 @@
    */
 
   function DotBin(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   DotBin.Definition = {
     'type': 'DotBin',
@@ -9969,7 +9973,7 @@
 
   const autostep = (data, field) => span(extent(data, field)) / 30;
 
-  inherits(DotBin, Transform, {
+  inherits(DotBin, Transform$1, {
     transform(_, pulse) {
       if (this.value && !(_.modified() || pulse.changed())) {
         return pulse; // early exit
@@ -10039,7 +10043,7 @@
    */
 
   function Extent(params) {
-    Transform.call(this, [undefined, undefined], params);
+    Transform$1.call(this, [undefined, undefined], params);
   }
   Extent.Definition = {
     'type': 'Extent',
@@ -10050,7 +10054,7 @@
       'required': true
     }]
   };
-  inherits(Extent, Transform, {
+  inherits(Extent, Transform$1, {
     transform(_, pulse) {
       const extent = this.value,
             field = _.field,
@@ -10167,7 +10171,7 @@
    */
 
   function Facet$1(params) {
-    Transform.call(this, {}, params);
+    Transform$1.call(this, {}, params);
     this._keys = fastmap(); // cache previously calculated key values
     // keep track of active subflows, use as targets array for listeners
     // this allows us to limit propagation to only updated subflows
@@ -10181,7 +10185,7 @@
       }
     };
   }
-  inherits(Facet$1, Transform, {
+  inherits(Facet$1, Transform$1, {
     activate(flow) {
       this._targets[this._targets.active++] = flow;
     },
@@ -10348,7 +10352,7 @@
    */
 
   function Filter(params) {
-    Transform.call(this, fastmap(), params);
+    Transform$1.call(this, fastmap(), params);
   }
   Filter.Definition = {
     'type': 'Filter',
@@ -10361,7 +10365,7 @@
       'required': true
     }]
   };
-  inherits(Filter, Transform, {
+  inherits(Filter, Transform$1, {
     transform(_, pulse) {
       const df = pulse.dataflow,
             cache = this.value,
@@ -10425,7 +10429,7 @@
    */
 
   function Flatten(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
   Flatten.Definition = {
     'type': 'Flatten',
@@ -10446,7 +10450,7 @@
       'array': true
     }]
   };
-  inherits(Flatten, Transform, {
+  inherits(Flatten, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE),
             fields = _.fields,
@@ -10497,7 +10501,7 @@
    */
 
   function Fold(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
   Fold.Definition = {
     'type': 'Fold',
@@ -10517,7 +10521,7 @@
       'default': ['key', 'value']
     }]
   };
-  inherits(Fold, Transform, {
+  inherits(Fold, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE),
             fields = _.fields,
@@ -10552,7 +10556,7 @@
    */
 
   function Formula(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Formula.Definition = {
     'type': 'Formula',
@@ -10572,7 +10576,7 @@
       'type': 'boolean'
     }]
   };
-  inherits(Formula, Transform, {
+  inherits(Formula, Transform$1, {
     transform(_, pulse) {
       const func = _.expr,
             as = _.as,
@@ -10605,9 +10609,9 @@
    */
 
   function Generate(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
-  inherits(Generate, Transform, {
+  inherits(Generate, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.ALL),
             gen = _.generator;
@@ -10667,7 +10671,7 @@
    */
 
   function Impute(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
   Impute.Definition = {
     'type': 'Impute',
@@ -10719,7 +10723,7 @@
     return t => t ? f(t) : NaN;
   }
 
-  inherits(Impute, Transform, {
+  inherits(Impute, Transform$1, {
     transform(_, pulse) {
       var out = pulse.fork(pulse.ALL),
           impute = getValue(_),
@@ -10923,7 +10927,7 @@
    */
 
   function KDE(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   KDE.Definition = {
     'type': 'KDE',
@@ -10978,7 +10982,7 @@
       'default': ['value', 'density']
     }]
   };
-  inherits(KDE, Transform, {
+  inherits(KDE, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
 
@@ -11057,10 +11061,10 @@
    */
 
   function Load$1(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
     this._pending = null;
   }
-  inherits(Load$1, Transform, {
+  inherits(Load$1, Transform$1, {
     transform(_, pulse) {
       const df = pulse.dataflow;
 
@@ -11116,7 +11120,7 @@
    */
 
   function Lookup(params) {
-    Transform.call(this, {}, params);
+    Transform$1.call(this, {}, params);
   }
   Lookup.Definition = {
     'type': 'Lookup',
@@ -11153,7 +11157,7 @@
       'default': null
     }]
   };
-  inherits(Lookup, Transform, {
+  inherits(Lookup, Transform$1, {
     transform(_, pulse) {
       const keys = _.fields,
             index = _.index,
@@ -11271,9 +11275,9 @@
    */
 
   function Params$2(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Params$2, Transform, {
+  inherits(Params$2, Transform$1, {
     transform(_, pulse) {
       this.modified(_.modified());
       this.value = _;
@@ -11358,7 +11362,7 @@
       key: _.key,
       groupby: _.groupby,
       ops: keys.map(() => op),
-      fields: keys.map(k => get$4(k, key, value, fields)),
+      fields: keys.map(k => get$5(k, key, value, fields)),
       as: keys.map(k => k + ''),
       modified: _.modified.bind(_)
     };
@@ -11366,7 +11370,7 @@
   // Output NaN for non-existent values; aggregator will ignore!
 
 
-  function get$4(k, key, value, fields) {
+  function get$5(k, key, value, fields) {
     return accessor(d => key(d) === k ? value(d) : NaN, fields, k + '');
   } // Collect (and optionally limit) all unique pivot values.
 
@@ -11453,7 +11457,7 @@
    */
 
   function Project(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Project.Definition = {
     'type': 'Project',
@@ -11472,7 +11476,7 @@
       'array': true
     }]
   };
-  inherits(Project, Transform, {
+  inherits(Project, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE),
             fields = _.fields,
@@ -11522,9 +11526,9 @@
    */
 
   function Proxy$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Proxy$1, Transform, {
+  inherits(Proxy$1, Transform$1, {
     transform(_, pulse) {
       this.value = _.value;
       return _.modified('value') ? pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS) : pulse.StopPropagation;
@@ -11550,7 +11554,7 @@
    */
 
   function Quantile$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Quantile$1.Definition = {
     'type': 'Quantile',
@@ -11582,7 +11586,7 @@
     }]
   };
   const EPSILON$2 = 1e-14;
-  inherits(Quantile$1, Transform, {
+  inherits(Quantile$1, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
             as = _.as || ['prob', 'value'];
@@ -11633,9 +11637,9 @@
    */
 
   function Relay$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Relay$1, Transform, {
+  inherits(Relay$1, Transform$1, {
     transform(_, pulse) {
       let out, lut;
 
@@ -11686,7 +11690,7 @@
    */
 
   function Sample(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
     this.count = 0;
   }
   Sample.Definition = {
@@ -11698,7 +11702,7 @@
       'default': 1000
     }]
   };
-  inherits(Sample, Transform, {
+  inherits(Sample, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE),
             mod = _.modified('size'),
@@ -11799,7 +11803,7 @@
    */
 
   function Sequence(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Sequence.Definition = {
     'type': 'Sequence',
@@ -11825,7 +11829,7 @@
       'default': 'data'
     }]
   };
-  inherits(Sequence, Transform, {
+  inherits(Sequence, Transform$1, {
     transform(_, pulse) {
       if (this.value && !_.modified()) return;
       const out = pulse.materialize().fork(pulse.MOD),
@@ -11850,10 +11854,10 @@
    */
 
   function Sieve$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
     this.modified(true); // always treat as modified
   }
-  inherits(Sieve$1, Transform, {
+  inherits(Sieve$1, Transform$1, {
     transform(_, pulse) {
       this.value = pulse.source;
       return pulse.changed() ? pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS) : pulse.StopPropagation;
@@ -11869,7 +11873,7 @@
    */
 
   function TimeUnit(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   const OUTPUT = ['unit0', 'unit1'];
   TimeUnit.Definition = {
@@ -11915,7 +11919,7 @@
       'default': OUTPUT
     }]
   };
-  inherits(TimeUnit, Transform, {
+  inherits(TimeUnit, Transform$1, {
     transform(_, pulse) {
       const field = _.field,
             band = _.interval !== false,
@@ -11993,9 +11997,9 @@
    */
 
   function TupleIndex(params) {
-    Transform.call(this, fastmap(), params);
+    Transform$1.call(this, fastmap(), params);
   }
-  inherits(TupleIndex, Transform, {
+  inherits(TupleIndex, Transform$1, {
     transform(_, pulse) {
       const df = pulse.dataflow,
             field = _.field,
@@ -12033,9 +12037,9 @@
    */
 
   function Values$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Values$1, Transform, {
+  inherits(Values$1, Transform$1, {
     transform(_, pulse) {
       const run = !this.value || _.modified('field') || _.modified('sort') || pulse.changed() || _.sort && pulse.modified(_.sort.fields);
 
@@ -12353,7 +12357,7 @@
    */
 
   function Window(params) {
-    Transform.call(this, {}, params);
+    Transform$1.call(this, {}, params);
     this._mlen = 0;
     this._mods = [];
   }
@@ -12402,7 +12406,7 @@
       'default': false
     }]
   };
-  inherits(Window, Transform, {
+  inherits(Window, Transform$1, {
     transform(_, pulse) {
       this.stamp = pulse.stamp;
 
@@ -14360,7 +14364,7 @@
     return new Rgb(o.r, o.g, o.b, o.opacity);
   }
 
-  function rgb$1(r, g, b, opacity) {
+  function rgb(r, g, b, opacity) {
     return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
   }
 
@@ -14371,7 +14375,7 @@
     this.opacity = +opacity;
   }
 
-  define(Rgb, rgb$1, extend(Color, {
+  define(Rgb, rgb, extend(Color, {
     brighter(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
@@ -14757,11 +14761,11 @@
     return d ? linear$1(a, d) : constant$2(isNaN(a) ? b : a);
   }
 
-  var rgb = (function rgbGamma(y) {
+  var interpolateRgb = (function rgbGamma(y) {
     var color = gamma(y);
 
-    function rgb(start, end) {
-      var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
+    function rgb$1(start, end) {
+      var r = color((start = rgb(start)).r, (end = rgb(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
           opacity = nogamma(start.opacity, end.opacity);
@@ -14774,9 +14778,9 @@
       };
     }
 
-    rgb.gamma = rgbGamma;
+    rgb$1.gamma = rgbGamma;
 
-    return rgb;
+    return rgb$1;
   })(1);
 
   function rgbSpline(spline) {
@@ -14787,7 +14791,7 @@
           b = new Array(n),
           i, color;
       for (i = 0; i < n; ++i) {
-        color = rgb$1(colors[i]);
+        color = rgb(colors[i]);
         r[i] = color.r || 0;
         g[i] = color.g || 0;
         b[i] = color.b || 0;
@@ -14834,7 +14838,7 @@
         c = new Array(nb),
         i;
 
-    for (i = 0; i < na; ++i) x[i] = interpolate$1(a[i], b[i]);
+    for (i = 0; i < na; ++i) x[i] = interpolate$2(a[i], b[i]);
     for (; i < nb; ++i) c[i] = b[i];
 
     return function(t) {
@@ -14866,7 +14870,7 @@
 
     for (k in b) {
       if (k in a) {
-        i[k] = interpolate$1(a[k], b[k]);
+        i[k] = interpolate$2(a[k], b[k]);
       } else {
         c[k] = b[k];
       }
@@ -14893,7 +14897,7 @@
     };
   }
 
-  function string(a, b) {
+  function interpolateString(a, b) {
     var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
         am, // current match in a
         bm, // current match in b
@@ -14941,12 +14945,12 @@
           });
   }
 
-  function interpolate$1(a, b) {
+  function interpolate$2(a, b) {
     var t = typeof b, c;
     return b == null || t === "boolean" ? constant$2(b)
         : (t === "number" ? interpolateNumber
-        : t === "string" ? ((c = color$2(b)) ? (b = c, rgb) : string)
-        : b instanceof color$2 ? rgb
+        : t === "string" ? ((c = color$2(b)) ? (b = c, interpolateRgb) : interpolateString)
+        : b instanceof color$2 ? interpolateRgb
         : b instanceof Date ? date$1
         : isNumberArray(b) ? numberArray
         : Array.isArray(b) ? genericArray
@@ -15094,7 +15098,7 @@
     return ((x = Math.exp(2 * x)) - 1) / (x + 1);
   }
 
-  var zoom = (function zoomRho(rho, rho2, rho4) {
+  var interpolateZoom = (function zoomRho(rho, rho2, rho4) {
 
     // p0 = [ux0, uy0, w0]
     // p1 = [ux1, uy1, w1]
@@ -15232,7 +15236,7 @@
   var cubehelixLong = cubehelix(nogamma);
 
   function piecewise(interpolate, values) {
-    if (values === undefined) values = interpolate, interpolate = interpolate$1;
+    if (values === undefined) values = interpolate, interpolate = interpolate$2;
     var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
     while (i < n) I[i] = interpolate(v, v = values[++i]);
     return function(t) {
@@ -15249,7 +15253,7 @@
 
   var $$1 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    interpolate: interpolate$1,
+    interpolate: interpolate$2,
     interpolateArray: array$3,
     interpolateBasis: basis$1,
     interpolateBasisClosed: basisClosed,
@@ -15260,11 +15264,11 @@
     interpolateNumberArray: numberArray,
     interpolateObject: object,
     interpolateRound: interpolateRound,
-    interpolateString: string,
+    interpolateString: interpolateString,
     interpolateTransformCss: interpolateTransformCss,
     interpolateTransformSvg: interpolateTransformSvg,
-    interpolateZoom: zoom,
-    interpolateRgb: rgb,
+    interpolateZoom: interpolateZoom,
+    interpolateRgb: interpolateRgb,
     interpolateRgbBasis: rgbBasis,
     interpolateRgbBasisClosed: rgbBasisClosed,
     interpolateHsl: hsl$1,
@@ -15350,7 +15354,7 @@
   function transformer$3() {
     var domain = unit,
         range = unit,
-        interpolate = interpolate$1,
+        interpolate = interpolate$2,
         transform,
         untransform,
         unknown,
@@ -16010,7 +16014,7 @@
       };
     }
 
-    scale.range = range(interpolate$1);
+    scale.range = range(interpolate$2);
 
     scale.rangeRound = range(interpolateRound);
 
@@ -16114,7 +16118,7 @@
       };
     }
 
-    scale.range = range(interpolate$1);
+    scale.range = range(interpolate$2);
 
     scale.rangeRound = range(interpolateRound);
 
@@ -16477,7 +16481,7 @@
    * Augment scales with their type and needed inverse methods.
    */
 
-  function create$2(type, constructor, metadata) {
+  function create$3(type, constructor, metadata) {
     const ctr = function scale() {
       const s = constructor();
 
@@ -16495,7 +16499,7 @@
 
   function scale$4(type, scale, metadata) {
     if (arguments.length > 1) {
-      scales[type] = create$2(type, scale, metadata);
+      scales[type] = create$3(type, scale, metadata);
       return this;
     } else {
       return isValidScaleType(type) ? scales[type] : undefined;
@@ -16574,7 +16578,7 @@
     };
   }
   function interpolateColors(colors, type, gamma) {
-    return piecewise(interpolate(type || 'rgb', gamma), colors);
+    return piecewise(interpolate$1(type || 'rgb', gamma), colors);
   }
   function quantizeInterpolator(interpolator, count) {
     const samples = new Array(count),
@@ -16598,7 +16602,7 @@
       return s;
     }
   }
-  function interpolate(type, gamma) {
+  function interpolate$1(type, gamma) {
     const interp = $$1[method(type)];
     return gamma != null && interp && interp.gamma ? interp.gamma(gamma) : interp;
   }
@@ -16912,13 +16916,13 @@
   }
 
   const formatRange = format => (value, index, array) => {
-    const limit = get$3(array[index + 1], get$3(array.max, +Infinity)),
+    const limit = get$4(array[index + 1], get$4(array.max, +Infinity)),
           lo = formatValue$1(value, format),
           hi = formatValue$1(limit, format);
     return lo && hi ? lo + ' \u2013 ' + hi : hi ? '< ' + hi : '\u2265 ' + lo;
   };
 
-  const get$3 = (value, dflt) => value != null ? value : dflt;
+  const get$4 = (value, dflt) => value != null ? value : dflt;
 
   const formatDiscrete = format => (value, index) => index ? format(value) : null;
 
@@ -16989,18 +16993,18 @@
       id = g.id = 'gradient_' + gradient_id++;
 
       if (type === 'radial') {
-        g.x1 = get$2(g.x1, 0.5);
-        g.y1 = get$2(g.y1, 0.5);
-        g.r1 = get$2(g.r1, 0);
-        g.x2 = get$2(g.x2, 0.5);
-        g.y2 = get$2(g.y2, 0.5);
-        g.r2 = get$2(g.r2, 0.5);
+        g.x1 = get$3(g.x1, 0.5);
+        g.y1 = get$3(g.y1, 0.5);
+        g.r1 = get$3(g.r1, 0);
+        g.x2 = get$3(g.x2, 0.5);
+        g.y2 = get$3(g.y2, 0.5);
+        g.r2 = get$3(g.r2, 0.5);
         prefix = patternPrefix;
       } else {
-        g.x1 = get$2(g.x1, 0);
-        g.y1 = get$2(g.y1, 0);
-        g.x2 = get$2(g.x2, 1);
-        g.y2 = get$2(g.y2, 0);
+        g.x1 = get$3(g.x1, 0);
+        g.y1 = get$3(g.y1, 0);
+        g.x2 = get$3(g.x2, 1);
+        g.y2 = get$3(g.y2, 0);
       }
     } // register definition
 
@@ -17010,7 +17014,7 @@
     return 'url(' + (base || '') + '#' + prefix + id + ')';
   }
 
-  function get$2(val, def) {
+  function get$3(val, def) {
     return val != null ? val : def;
   }
 
@@ -22200,9 +22204,9 @@
    */
 
   function Bound$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Bound$1, Transform, {
+  inherits(Bound$1, Transform$1, {
     transform(_, pulse) {
       const view = pulse.dataflow,
             mark = _.mark,
@@ -22275,7 +22279,7 @@
    */
 
   function Identifier$1(params) {
-    Transform.call(this, 0, params);
+    Transform$1.call(this, 0, params);
   }
   Identifier$1.Definition = {
     'type': 'Identifier',
@@ -22288,7 +22292,7 @@
       'required': true
     }]
   };
-  inherits(Identifier$1, Transform, {
+  inherits(Identifier$1, Transform$1, {
     transform(_, pulse) {
       const counter = getCounter(pulse.dataflow),
             as = _.as;
@@ -22314,9 +22318,9 @@
    */
 
   function Mark$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Mark$1, Transform, {
+  inherits(Mark$1, Transform$1, {
     transform(_, pulse) {
       let mark = this.value; // acquire mark on first invocation, bind context and group
 
@@ -22381,7 +22385,7 @@
    */
 
   function Overlap$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   const methods = {
     parity: items => items.filter((item, i) => i % 2 ? item.opacity = 0 : 1),
@@ -22429,7 +22433,7 @@
 
   const reflow = (pulse, _) => pulse.reflow(_.modified()).modifies('opacity');
 
-  inherits(Overlap$1, Transform, {
+  inherits(Overlap$1, Transform$1, {
     transform(_, pulse) {
       const reduce = methods[_.method] || methods.parity,
             sep = _.separation || 0;
@@ -22494,9 +22498,9 @@
    */
 
   function Render$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Render$1, Transform, {
+  inherits(Render$1, Transform$1, {
     transform(_, pulse) {
       const view = pulse.dataflow;
       pulse.visit(pulse.ALL, item => view.dirty(item)); // set z-index dirty flag as needed
@@ -22510,7 +22514,7 @@
   });
 
   const tempBounds = new Bounds();
-  function set$3(item, property, value) {
+  function set$4(item, property, value) {
     return item[property] === value ? 0 : (item[property] = value, 1);
   }
 
@@ -22592,7 +22596,7 @@
 
     boundStroke(bounds.translate(x, y), item);
 
-    if (set$3(item, 'x', x + delta) | set$3(item, 'y', y + delta)) {
+    if (set$4(item, 'x', x + delta) | set$4(item, 'y', y + delta)) {
       item.bounds = tempBounds;
       view.dirty(item);
       item.bounds = bounds;
@@ -22691,7 +22695,7 @@
     return b.empty() ? b.set(0, 0, 0, 0) : b.translate(-(item.x || 0), -(item.y || 0));
   }
 
-  function get$1(opt, key, d) {
+  function get$2(opt, key, d) {
     const v = isObject(opt) ? opt[key] : opt;
     return v != null ? v : d !== undefined ? d : 0;
   }
@@ -22704,10 +22708,10 @@
     var dirty = !opt.nodirty,
         bbox = opt.bounds === Flush ? bboxFlush : bboxFull,
         bounds = tempBounds.set(0, 0, 0, 0),
-        alignCol = get$1(opt.align, Column),
-        alignRow = get$1(opt.align, Row),
-        padCol = get$1(opt.padding, Column),
-        padRow = get$1(opt.padding, Row),
+        alignCol = get$2(opt.align, Column),
+        alignRow = get$2(opt.align, Row),
+        padCol = get$2(opt.padding, Column),
+        padRow = get$2(opt.padding, Row),
         ncols = opt.columns || groups.length,
         nrows = ncols <= 0 ? 1 : Math.ceil(groups.length / ncols),
         n = groups.length,
@@ -22830,7 +22834,7 @@
     } // perform horizontal centering
 
 
-    if (alignCol && get$1(opt.center, Column) && nrows > 1) {
+    if (alignCol && get$2(opt.center, Column) && nrows > 1) {
       for (i = 0; i < n; ++i) {
         b = alignCol === All ? xMax : xExtent[i % ncols];
         x = b - boxes[i].x2 - groups[i].x - dx[i];
@@ -22839,7 +22843,7 @@
     } // perform vertical centering
 
 
-    if (alignRow && get$1(opt.center, Row) && ncols !== 1) {
+    if (alignRow && get$2(opt.center, Row) && ncols !== 1) {
       for (i = 0; i < n; ++i) {
         b = alignRow === All ? yMax : yExtent[~~(i / ncols)];
         y = b - boxes[i].y2 - groups[i].y - dy[i];
@@ -22852,10 +22856,10 @@
       bounds.union(boxes[i].translate(dx[i], dy[i]));
     }
 
-    x = get$1(opt.anchor, X);
-    y = get$1(opt.anchor, Y);
+    x = get$2(opt.anchor, X);
+    y = get$2(opt.anchor, Y);
 
-    switch (get$1(opt.anchor, Column)) {
+    switch (get$2(opt.anchor, Column)) {
       case End$1:
         x -= bounds.width();
         break;
@@ -22864,7 +22868,7 @@
         x -= bounds.width() / 2;
     }
 
-    switch (get$1(opt.anchor, Row)) {
+    switch (get$2(opt.anchor, Row)) {
       case End$1:
         y -= bounds.height();
         break;
@@ -22914,43 +22918,43 @@
     // perform row header layout
 
     if (views.rowheaders) {
-      band = get$1(opt.headerBand, Row, null);
-      x = layoutHeaders(view, views.rowheaders, groups, ncols, nrows, -get$1(off, 'rowHeader'), min, 0, bbox, 'x1', 0, ncols, 1, band);
+      band = get$2(opt.headerBand, Row, null);
+      x = layoutHeaders(view, views.rowheaders, groups, ncols, nrows, -get$2(off, 'rowHeader'), min, 0, bbox, 'x1', 0, ncols, 1, band);
     } // perform column header layout
 
 
     if (views.colheaders) {
-      band = get$1(opt.headerBand, Column, null);
-      y = layoutHeaders(view, views.colheaders, groups, ncols, ncols, -get$1(off, 'columnHeader'), min, 1, bbox, 'y1', 0, 1, ncols, band);
+      band = get$2(opt.headerBand, Column, null);
+      y = layoutHeaders(view, views.colheaders, groups, ncols, ncols, -get$2(off, 'columnHeader'), min, 1, bbox, 'y1', 0, 1, ncols, band);
     } // perform row footer layout
 
 
     if (views.rowfooters) {
-      band = get$1(opt.footerBand, Row, null);
-      x2 = layoutHeaders(view, views.rowfooters, groups, ncols, nrows, get$1(off, 'rowFooter'), max, 0, bbox, 'x2', ncols - 1, ncols, 1, band);
+      band = get$2(opt.footerBand, Row, null);
+      x2 = layoutHeaders(view, views.rowfooters, groups, ncols, nrows, get$2(off, 'rowFooter'), max, 0, bbox, 'x2', ncols - 1, ncols, 1, band);
     } // perform column footer layout
 
 
     if (views.colfooters) {
-      band = get$1(opt.footerBand, Column, null);
-      y2 = layoutHeaders(view, views.colfooters, groups, ncols, ncols, get$1(off, 'columnFooter'), max, 1, bbox, 'y2', cells - ncols, 1, ncols, band);
+      band = get$2(opt.footerBand, Column, null);
+      y2 = layoutHeaders(view, views.colfooters, groups, ncols, ncols, get$2(off, 'columnFooter'), max, 1, bbox, 'y2', cells - ncols, 1, ncols, band);
     } // perform row title layout
 
 
     if (views.rowtitle) {
-      anchor = get$1(opt.titleAnchor, Row);
-      offset = get$1(off, 'rowTitle');
+      anchor = get$2(opt.titleAnchor, Row);
+      offset = get$2(off, 'rowTitle');
       offset = anchor === End$1 ? x2 + offset : x - offset;
-      band = get$1(opt.titleBand, Row, 0.5);
+      band = get$2(opt.titleBand, Row, 0.5);
       layoutTitle(view, views.rowtitle, offset, 0, bounds, band);
     } // perform column title layout
 
 
     if (views.coltitle) {
-      anchor = get$1(opt.titleAnchor, Column);
-      offset = get$1(off, 'columnTitle');
+      anchor = get$2(opt.titleAnchor, Column);
+      offset = get$2(off, 'columnTitle');
       offset = anchor === End$1 ? y2 + offset : y - offset;
-      band = get$1(opt.titleBand, Column, 0.5);
+      band = get$2(opt.titleBand, Column, 0.5);
       layoutTitle(view, views.coltitle, offset, 1, bounds, band);
     }
   }
@@ -23325,7 +23329,7 @@
       tempBounds.clear().union(subtitle.bounds);
       tempBounds.translate(sx - (subtitle.x || 0), sy - (subtitle.y || 0));
 
-      if (set$3(subtitle, 'x', sx) | set$3(subtitle, 'y', sy)) {
+      if (set$4(subtitle, 'x', sx) | set$4(subtitle, 'y', sy)) {
         view.dirty(subtitle);
         subtitle.bounds.clear().union(tempBounds);
         subtitle.mark.bounds.clear().union(tempBounds);
@@ -23365,7 +23369,7 @@
         y = group.y;
     }
 
-    if (set$3(group, 'x', x) | set$3(group, 'y', y)) {
+    if (set$4(group, 'x', x) | set$4(group, 'y', y)) {
       tempBounds.translate(x, y);
       view.dirty(group);
       group.bounds.clear().union(tempBounds);
@@ -23385,9 +23389,9 @@
    */
 
   function ViewLayout$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(ViewLayout$1, Transform, {
+  inherits(ViewLayout$1, Transform$1, {
     transform(_, pulse) {
       const view = pulse.dataflow;
 
@@ -23590,9 +23594,9 @@
    */
 
   function AxisTicks$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(AxisTicks$1, Transform, {
+  inherits(AxisTicks$1, Transform$1, {
     transform(_, pulse) {
       if (this.value && !_.modified()) {
         return pulse.StopPropagation;
@@ -23642,7 +23646,7 @@
    */
 
   function DataJoin$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
 
   function defaultItemCreate() {
@@ -23657,7 +23661,7 @@
     return map;
   }
 
-  inherits(DataJoin$1, Transform, {
+  inherits(DataJoin$1, Transform$1, {
     transform(_, pulse) {
       var df = pulse.dataflow,
           out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
@@ -23743,9 +23747,9 @@
    */
 
   function Encode$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(Encode$1, Transform, {
+  inherits(Encode$1, Transform$1, {
     transform(_, pulse) {
       var out = pulse.fork(pulse.ADD_REM),
           fmod = _.mod || false,
@@ -23836,9 +23840,9 @@
    */
 
   function LegendEntries$1(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
-  inherits(LegendEntries$1, Transform, {
+  inherits(LegendEntries$1, Transform$1, {
     transform(_, pulse) {
       if (this.value != null && !_.modified()) {
         return pulse.StopPropagation;
@@ -23949,7 +23953,7 @@
 
 
   function LinkPath(params) {
-    Transform.call(this, {}, params);
+    Transform$1.call(this, {}, params);
   }
   LinkPath.Definition = {
     'type': 'LinkPath',
@@ -23991,7 +23995,7 @@
       'default': 'path'
     }]
   };
-  inherits(LinkPath, Transform, {
+  inherits(LinkPath, Transform$1, {
     transform(_, pulse) {
       var sx = _.sourceX || sourceX,
           sy = _.sourceY || sourceY,
@@ -24096,7 +24100,7 @@
    */
 
   function Pie(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Pie.Definition = {
     'type': 'Pie',
@@ -24126,7 +24130,7 @@
       'default': ['startAngle', 'endAngle']
     }]
   };
-  inherits(Pie, Transform, {
+  inherits(Pie, Transform$1, {
     transform(_, pulse) {
       var as = _.as || ['startAngle', 'endAngle'],
           startAngle = as[0],
@@ -24180,10 +24184,10 @@
    */
 
   function Scale$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
     this.modified(true); // always treat as modified
   }
-  inherits(Scale$1, Transform, {
+  inherits(Scale$1, Transform$1, {
     transform(_, pulse) {
       var df = pulse.dataflow,
           scale$1 = this.value,
@@ -24379,11 +24383,11 @@
 
 
     if (range && _.interpolate && scale.interpolate) {
-      scale.interpolate(interpolate(_.interpolate, _.interpolateGamma));
+      scale.interpolate(interpolate$1(_.interpolate, _.interpolateGamma));
     } else if (isFunction(scale.round)) {
       scale.round(round);
     } else if (isFunction(scale.rangeRound)) {
-      scale.interpolate(round ? interpolateRound : interpolate$1);
+      scale.interpolate(round ? interpolateRound : interpolate$2);
     }
 
     if (range) scale.range(flip(range, _.reverse));
@@ -24436,9 +24440,9 @@
    */
 
   function SortItems$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
-  inherits(SortItems$1, Transform, {
+  inherits(SortItems$1, Transform$1, {
     transform(_, pulse) {
       const mod = _.modified('sort') || pulse.changed(pulse.ADD) || pulse.modified(_.sort.fields) || pulse.modified('datum');
       if (mod) pulse.source.sort(stableCompare(_.sort));
@@ -24463,7 +24467,7 @@
    */
 
   function Stack(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Stack.Definition = {
     'type': 'Stack',
@@ -24493,7 +24497,7 @@
       'default': DefOutput
     }]
   };
-  inherits(Stack, Transform, {
+  inherits(Stack, Transform$1, {
     transform(_, pulse) {
       var as = _.as || DefOutput,
           y0 = as[0],
@@ -27486,7 +27490,7 @@
    * Augment projections with their type and a copy method.
    */
 
-  function create$1(type, constructor) {
+  function create$2(type, constructor) {
     return function projection() {
       const p = constructor();
       p.type = type;
@@ -27513,7 +27517,7 @@
     type = type.toLowerCase();
 
     if (arguments.length > 1) {
-      projections[type] = create$1(type, proj);
+      projections[type] = create$2(type, proj);
       return this;
     } else {
       return projections[type] || null;
@@ -27829,7 +27833,7 @@
    */
 
   function Isocontour(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Isocontour.Definition = {
     'type': 'Isocontour',
@@ -27879,7 +27883,7 @@
       'default': 'contour'
     }]
   };
-  inherits(Isocontour, Transform, {
+  inherits(Isocontour, Transform$1, {
     transform(_, pulse) {
       if (this.value && !pulse.changed() && !_.modified()) {
         return pulse.StopPropagation;
@@ -28147,7 +28151,7 @@
    */
 
   function KDE2D(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   KDE2D.Definition = {
     'type': 'KDE2D',
@@ -28198,7 +28202,7 @@
     PARAMS.forEach(param => _[param] != null ? obj[param](_[param]) : 0);
     return obj;
   }
-  inherits(KDE2D, Transform, {
+  inherits(KDE2D, Transform$1, {
     transform(_, pulse) {
       if (this.value && !pulse.changed() && !_.modified()) return pulse.StopPropagation;
       var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
@@ -28286,7 +28290,7 @@
    */
 
   function Contour(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Contour.Definition = {
     'type': 'Contour',
@@ -28335,7 +28339,7 @@
       'default': true
     }]
   };
-  inherits(Contour, Transform, {
+  inherits(Contour, Transform$1, {
     transform(_, pulse) {
       if (this.value && !pulse.changed() && !_.modified()) {
         return pulse.StopPropagation;
@@ -28385,7 +28389,7 @@
    */
 
   function GeoJSON(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   GeoJSON.Definition = {
     'type': 'GeoJSON',
@@ -28400,7 +28404,7 @@
       'type': 'field'
     }]
   };
-  inherits(GeoJSON, Transform, {
+  inherits(GeoJSON, Transform$1, {
     transform(_, pulse) {
       var features = this._features,
           points = this._points,
@@ -28461,7 +28465,7 @@
    */
 
   function GeoPath(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   GeoPath.Definition = {
     'type': 'GeoPath',
@@ -28484,7 +28488,7 @@
       'default': 'path'
     }]
   };
-  inherits(GeoPath, Transform, {
+  inherits(GeoPath, Transform$1, {
     transform(_, pulse) {
       var out = pulse.fork(pulse.ALL),
           path = this.value,
@@ -28532,7 +28536,7 @@
    */
 
   function GeoPoint(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   GeoPoint.Definition = {
     'type': 'GeoPoint',
@@ -28557,7 +28561,7 @@
       'default': ['x', 'y']
     }]
   };
-  inherits(GeoPoint, Transform, {
+  inherits(GeoPoint, Transform$1, {
     transform(_, pulse) {
       var proj = _.projection,
           lon = _.fields[0],
@@ -28605,7 +28609,7 @@
    */
 
   function GeoShape(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   GeoShape.Definition = {
     'type': 'GeoShape',
@@ -28630,7 +28634,7 @@
       'default': 'shape'
     }]
   };
-  inherits(GeoShape, Transform, {
+  inherits(GeoShape, Transform$1, {
     transform(_, pulse) {
       var out = pulse.fork(pulse.ALL),
           shape = this.value,
@@ -28672,7 +28676,7 @@
    */
 
   function Graticule(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
     this.generator = graticule();
   }
   Graticule.Definition = {
@@ -28734,7 +28738,7 @@
       'default': 2.5
     }]
   };
-  inherits(Graticule, Transform, {
+  inherits(Graticule, Transform$1, {
     transform(_, pulse) {
       var src = this.value,
           gen = this.generator,
@@ -28783,7 +28787,7 @@
    */
 
   function Heatmap(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Heatmap.Definition = {
     'type': 'heatmap',
@@ -28812,7 +28816,7 @@
       'default': 'image'
     }]
   };
-  inherits(Heatmap, Transform, {
+  inherits(Heatmap, Transform$1, {
     transform(_, pulse) {
       if (!pulse.changed() && !_.modified()) {
         return pulse.StopPropagation;
@@ -28849,12 +28853,12 @@
     let f;
 
     if (isFunction(color)) {
-      f = obj => rgb$1(color(obj, _));
+      f = obj => rgb(color(obj, _));
 
       f.dep = dependency(color);
     } else {
       // default to mid-grey
-      f = constant$4(rgb$1(color || '#888'));
+      f = constant$4(rgb(color || '#888'));
     }
 
     return f;
@@ -28927,21 +28931,21 @@
    */
 
   function Projection$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
     this.modified(true); // always treat as modified
   }
-  inherits(Projection$1, Transform, {
+  inherits(Projection$1, Transform$1, {
     transform(_, pulse) {
       let proj = this.value;
 
       if (!proj || _.modified('type')) {
-        this.value = proj = create(_.type);
+        this.value = proj = create$1(_.type);
         projectionProperties.forEach(prop => {
-          if (_[prop] != null) set$2(proj, prop, _[prop]);
+          if (_[prop] != null) set$3(proj, prop, _[prop]);
         });
       } else {
         projectionProperties.forEach(prop => {
-          if (_.modified(prop)) set$2(proj, prop, _[prop]);
+          if (_.modified(prop)) set$3(proj, prop, _[prop]);
         });
       }
 
@@ -28957,13 +28961,13 @@
     _.extent ? proj.fitExtent(_.extent, data) : _.size ? proj.fitSize(_.size, data) : 0;
   }
 
-  function create(type) {
+  function create$1(type) {
     const constructor = projection((type || 'mercator').toLowerCase());
     if (!constructor) error('Unrecognized projection type: ' + type);
     return constructor();
   }
 
-  function set$2(proj, key, value) {
+  function set$3(proj, key, value) {
     if (isFunction(proj[key])) proj[key](value);
   }
 
@@ -29700,7 +29704,7 @@
 
       // If no callback was specified, return the callback of the given type and name.
       if (arguments.length < 2) {
-        while (++i < n) if ((t = (typename = T[i]).type) && (t = get(_[t], typename.name))) return t;
+        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$1(_[t], typename.name))) return t;
         return;
       }
 
@@ -29708,8 +29712,8 @@
       // Otherwise, if a null callback was specified, remove callbacks of the given name.
       if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
       while (++i < n) {
-        if (t = (typename = T[i]).type) _[t] = set$1(_[t], typename.name, callback);
-        else if (callback == null) for (t in _) _[t] = set$1(_[t], typename.name, null);
+        if (t = (typename = T[i]).type) _[t] = set$2(_[t], typename.name, callback);
+        else if (callback == null) for (t in _) _[t] = set$2(_[t], typename.name, null);
       }
 
       return this;
@@ -29730,7 +29734,7 @@
     }
   };
 
-  function get(type, name) {
+  function get$1(type, name) {
     for (var i = 0, n = type.length, c; i < n; ++i) {
       if ((c = type[i]).name === name) {
         return c.value;
@@ -29738,7 +29742,7 @@
     }
   }
 
-  function set$1(type, name, callback) {
+  function set$2(type, name, callback) {
     for (var i = 0, n = type.length; i < n; ++i) {
       if (type[i].name === name) {
         type[i] = noop, type = type.slice(0, i).concat(type.slice(i + 1));
@@ -29750,7 +29754,7 @@
   }
 
   var frame = 0, // is an animation frame pending?
-      timeout = 0, // is a timeout pending?
+      timeout$1 = 0, // is a timeout pending?
       interval$1 = 0, // are any timers active?
       pokeDelay = 1000, // how frequently we check for clock skew
       taskHead,
@@ -29817,7 +29821,7 @@
 
   function wake() {
     clockNow = (clockLast = clock.now()) + clockSkew;
-    frame = timeout = 0;
+    frame = timeout$1 = 0;
     try {
       timerFlush();
     } finally {
@@ -29849,15 +29853,25 @@
 
   function sleep(time) {
     if (frame) return; // Soonest alarm already set, or will be.
-    if (timeout) timeout = clearTimeout(timeout);
+    if (timeout$1) timeout$1 = clearTimeout(timeout$1);
     var delay = time - clockNow; // Strictly less than if we recomputed clockNow.
     if (delay > 24) {
-      if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
+      if (time < Infinity) timeout$1 = setTimeout(wake, time - clock.now() - clockSkew);
       if (interval$1) interval$1 = clearInterval(interval$1);
     } else {
       if (!interval$1) clockLast = clock.now(), interval$1 = setInterval(poke, pokeDelay);
       frame = 1, setFrame(wake);
     }
+  }
+
+  function timeout(callback, delay, time) {
+    var t = new Timer$1;
+    delay = delay == null ? 0 : +delay;
+    t.restart(elapsed => {
+      t.stop();
+      callback(elapsed + delay);
+    }, delay, time);
+    return t;
   }
 
   function interval(callback, delay, time) {
@@ -30251,7 +30265,7 @@
    */
 
   function Force(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Force.Definition = {
     'type': 'Force',
@@ -30397,7 +30411,7 @@
       'default': ForceOutput
     }]
   };
-  inherits(Force, Transform, {
+  inherits(Force, Transform$1, {
     transform(_, pulse) {
       var sim = this.value,
           change = pulse.changed(pulse.ADD_REM),
@@ -31942,7 +31956,7 @@
    */
 
   function Nest(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Nest.Definition = {
     'type': 'Nest',
@@ -31962,7 +31976,7 @@
 
   const children$1 = n => n.values;
 
-  inherits(Nest, Transform, {
+  inherits(Nest, Transform$1, {
     transform(_, pulse) {
       if (!pulse.source) {
         error('Nest transform requires an upstream data source.');
@@ -32073,12 +32087,12 @@
    */
 
   function HierarchyLayout(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
 
   const defaultSeparation = (a, b) => a.parent === b.parent ? 1 : 2;
 
-  inherits(HierarchyLayout, Transform, {
+  inherits(HierarchyLayout, Transform$1, {
     transform(_, pulse) {
       if (!pulse.source || !pulse.source.root) {
         error(this.constructor.name + ' transform requires a backing tree data source.');
@@ -32236,7 +32250,7 @@
    */
 
   function Stratify(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Stratify.Definition = {
     'type': 'Stratify',
@@ -32253,7 +32267,7 @@
       'required': true
     }]
   };
-  inherits(Stratify, Transform, {
+  inherits(Stratify, Transform$1, {
     transform(_, pulse) {
       if (!pulse.source) {
         error('Stratify transform requires an upstream data source.');
@@ -32354,7 +32368,7 @@
    */
 
   function TreeLinks(params) {
-    Transform.call(this, [], params);
+    Transform$1.call(this, [], params);
   }
   TreeLinks.Definition = {
     'type': 'TreeLinks',
@@ -32365,7 +32379,7 @@
     },
     'params': []
   };
-  inherits(TreeLinks, Transform, {
+  inherits(TreeLinks, Transform$1, {
     transform(_, pulse) {
       const links = this.value,
             tree = pulse.source && pulse.source.root,
@@ -33357,7 +33371,7 @@
    */
 
   function Label$1(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Label$1.Definition = {
     type: 'Label',
@@ -33417,7 +33431,7 @@
       default: Output$1
     }]
   };
-  inherits(Label$1, Transform, {
+  inherits(Label$1, Transform$1, {
     transform(_, pulse) {
       function modp(param) {
         const p = _[param];
@@ -33498,7 +33512,7 @@
    */
 
   function Loess(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Loess.Definition = {
     'type': 'Loess',
@@ -33527,7 +33541,7 @@
       'array': true
     }]
   };
-  inherits(Loess, Transform, {
+  inherits(Loess, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
 
@@ -33584,7 +33598,7 @@
 
 
   function Regression(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Regression.Definition = {
     'type': 'Regression',
@@ -33627,7 +33641,7 @@
       'array': true
     }]
   };
-  inherits(Regression, Transform, {
+  inherits(Regression, Transform$1, {
     transform(_, pulse) {
       const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
 
@@ -35084,7 +35098,7 @@
   }
 
   function Voronoi(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   Voronoi.Definition = {
     'type': 'Voronoi',
@@ -35122,7 +35136,7 @@
     }]
   };
   const defaultExtent = [-1e5, -1e5, 1e5, 1e5];
-  inherits(Voronoi, Transform, {
+  inherits(Voronoi, Transform$1, {
     transform(_, pulse) {
       const as = _.as || 'path',
             data = pulse.source; // nothing to do if no data
@@ -35628,7 +35642,7 @@
   const Output = ['x', 'y', 'font', 'fontSize', 'fontStyle', 'fontWeight', 'angle'];
   const Params$1 = ['text', 'font', 'rotate', 'fontSize', 'fontStyle', 'fontWeight'];
   function Wordcloud(params) {
-    Transform.call(this, cloud(), params);
+    Transform$1.call(this, cloud(), params);
   }
   Wordcloud.Definition = {
     'type': 'Wordcloud',
@@ -35689,7 +35703,7 @@
       'default': Output
     }]
   };
-  inherits(Wordcloud, Transform, {
+  inherits(Wordcloud, Transform$1, {
     transform(_, pulse) {
       if (_.size && !(_.size[0] && _.size[1])) {
         error('Wordcloud size dimensions must be non-zero.');
@@ -36019,7 +36033,7 @@
    */
 
   function CrossFilter(params) {
-    Transform.call(this, Bitmaps(), params);
+    Transform$1.call(this, Bitmaps(), params);
     this._indices = null;
     this._dims = null;
   }
@@ -36043,7 +36057,7 @@
       }
     }]
   };
-  inherits(CrossFilter, Transform, {
+  inherits(CrossFilter, Transform$1, {
     transform(_, pulse) {
       if (!this._dims) {
         return this.init(_, pulse);
@@ -36425,7 +36439,7 @@
    */
 
   function ResolveFilter(params) {
-    Transform.call(this, null, params);
+    Transform$1.call(this, null, params);
   }
   ResolveFilter.Definition = {
     'type': 'ResolveFilter',
@@ -36442,7 +36456,7 @@
       'description': 'Per-tuple filter bitmaps from a CrossFilter transform.'
     }]
   };
-  inherits(ResolveFilter, Transform, {
+  inherits(ResolveFilter, Transform$1, {
     transform(_, pulse) {
       const ignore = ~(_.ignore || 0),
             // bit mask where zeros -> dims to ignore
@@ -38298,7 +38312,7 @@
 
   function intersection(values, ...others) {
     values = new InternSet(values);
-    others = others.map(set);
+    others = others.map(set$1);
     out: for (const value of values) {
       for (const other of others) {
         if (!other.has(value)) {
@@ -38310,7 +38324,7 @@
     return values;
   }
 
-  function set(values) {
+  function set$1(values) {
     return values instanceof InternSet ? values : new InternSet(values);
   }
 
@@ -38849,7 +38863,7 @@
   }
 
   function luminance(color) {
-    const c = rgb$1(color),
+    const c = rgb(color),
           r = channel_luminance_value(c.r),
           g = channel_luminance_value(c.g),
           b = channel_luminance_value(c.b);
@@ -39281,7 +39295,7 @@
     span,
     inrange,
     truncate: truncate$1,
-    rgb: rgb$1,
+    rgb,
     lab: lab$1,
     hcl: hcl$2,
     hsl: hsl$2,
@@ -45757,31 +45771,68 @@
   class TrendLine {
       dom = {container:null}
       width = 480;
-      height = 320;
+      height = 220;
 
-      constructor(container) {
-          this.container = select$1(container).append("div").node();
+      constructor(container, is_bigchart) {
+
+          //edit the spec before parsing and creating the view
+          if(!!is_bigchart){
+              this.big_chart_mutable.value = true;
+          }
+
+          this.wrap =  select$1(container).append("div")
+                                      .style("width","100%")
+                                      .classed("flex-container",true)
+                                      .classed("chart-wrapper",true)
+                                      .classed("big-chart", this.big_chart_mutable.value);
+          this.container = this.wrap.append("div").append("div").node();
+          this.definition = this.wrap.append("div");
           this.view = new View$1(parse(this.vega_spec));
           this.view.initialize(this.container).renderer("svg").runAsync();
+          this.view.resize();
+
+          this.definition.html("<p><b>Definition</b><br/><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis malesuada massa sit amet sagittis. In elementum feugiat odio et fringilla.</i></p>");
+   
       }
 
       clear(){
           
       }
 
-      data(){
+      data(data_table){
+          this.view.resize();
+          this.view.data("table", data_table).runAsync();
+          return this;
+      }
 
+      signal(signal_name, value){
+          this.view.resize();
+          this.view.signal(signal_name, value).runAsync();
+      }
+
+      //structured this way for ease of editing spec prior to initialization in the constructor above
+      big_chart_mutable = {
+          "name":"bigchart",
+          "value":false
       }
 
       vega_spec = {
           "$schema": "https://vega.github.io/schema/vega/v5.json",
           "description": "State-level child poverty almanac",
-          "autosize":{"type": "fit", "resize": false},
-          "width": 480,
-          "height": 240,
+          "autosize":{"type": "fit-x", "resize": false},
+          "width": this.width,
+          "height": this.height,
           "padding": {"top":0,"left":0,"right":0, "bottom":0},
+          "layout":{
+              "columns":1,
+              "align":"none",
+              "padding":{"row":0,"column":0}
+          },
           "title":{
-              "text":""
+              "text":{"signal":"indicator_name"},
+              "anchor":"start",
+              "fontSize":18,
+              "limit":{"signal":"width"}
           },
 
           "signals":[
@@ -45797,16 +45848,36 @@
               },
               {
                   "name": "viewport_breaks",
-                  "value": [420, 780]
+                  "value": [780, 1024]
               },
               {
                   "name": "is_narrow",
                   "value": true,
-                  "update":"container_width < viewport_breaks[1]"
+                  "update":"container_width < viewport_breaks[0]"
               },
               {
                   "name":"width",
-                  "update": "is_narrow ? viewport_breaks[0] : viewport_breaks[1]"
+                  "update": "container_width"
+              },
+
+              this.big_chart_mutable,
+
+              {
+                  "name":"aspect",
+                  "value": 2,
+                  "update": "is_narrow ? (bigchart ? 2 : 2.5) : (bigchart ? 3 : 5)"
+              },
+              {
+                  "name":"chart_height",
+                  "update": "width / aspect"
+              },
+              {
+                  "name":"height",
+                  "update":"chart_height"
+              },
+              {
+                  "name":"indicator_name",
+                  "value":"Indicator"
               }
           ],
 
@@ -45827,61 +45898,1135 @@
               {
                   "name": "y",
                   "type": "linear",
-                  "range": "height",
+                  "range": [{"signal":"chart_height"}, 0],
                   "nice": true,
                   "zero": true,
                   "domain": {"data": "table", "field": "value"}
               }
           ],
 
-          "axes": [
+          "marks": [
               {
-                  "orient": "bottom", 
-                  "scale": "x", 
-                  "labelAngle":-45, 
-                  "labelAlign":"right", 
-                  "labelOverlap":false,
-                  "grid":true,
-                  "encode":{
-                      "grid":{
-                          "update":{
-                              "stroke":{"signal":"datum.value % 10 == 0 ? '#333333' : '#eeeeee'"}
+                  "name": "g_title",
+                  "type": "group",
+                  "marks": []
+              },
+              {
+                  "name": "g_main",
+                  "type": "group",
+                  "encode": {
+                      "update":{
+                          "height": {"signal":"chart_height"},
+                          "width":{"signal":"width"},
+                          "x":{"value":0}
+                      }
+                  },
+                  "marks": [
+                      {
+                          "type": "group",
+                          "from": {
+                              "facet":{
+                                  "name": "facet_table",
+                                  "data": "table",
+                                  "groupby": ["state_abbr","id"]
+                              }
+                          },
+                          "marks": [
+                              {
+                                  "type": "line",
+                                  "from": {"data": "facet_table"},
+                                  "encode": {
+                                      "enter": {
+                                          "interpolate": {"value": "monotone"},
+                                          "strokeOpacity": {"value": 1},
+                                          "strokeCap": {"value":"butt"},
+                                          "strokeJoin": {"value":"round"}
+                                      },
+                                      "update": {
+                                          "x": {"scale": "x", "field": "year"},
+                                          "y": {"scale": "y", "field": "value"},
+                                          "defined": {"signal":"datum.value != null"},
+                                          "stroke": [
+                                              {"test":"datum.state_abbr == 'US'", "value":"#007cc2"},
+                                              {"value":"#0a355b"}
+                                          ],
+                                          "strokeWidth": {"value": 1.5},
+                                          "strokeDash": [
+                                              {"test":"datum.state_abbr == 'US'", "value":[2,2]},
+                                              {"value":null}
+                                          ]
+                                      }
+                                  }
+                              },
+                              {
+                                  "type": "symbol",
+                                  "from": {"data": "facet_table"},
+                                  "encode": {
+                                      "enter": {
+                                      },
+                                      "update": {
+                                          "x": {"scale": "x", "field": "year"},
+                                          "y": {"scale": "y", "field": "value"},
+                                          "size": {"value":25},
+                                          "fill": [
+                                              {"test":"datum.state_abbr == 'US'", "value":"#007cc2"},
+                                              {"value":"#0a355b"}
+                                          ],
+                                          "opacity": [
+                                              {"test":"datum.state_abbr == 'US'", "value":0},
+                                              {"value":1}
+                                          ]
+                                      }
+                                  }
+                              }
+                          ]
+                      }
+                  ],
+                  "axes": [
+                      {
+                          "orient": "bottom", 
+                          "scale": "x", 
+                          "labelAngle":-45, 
+                          "labelAlign":"right", 
+                          "labelOverlap":false,
+                          "grid":false,
+                          "domain":false,
+                          "ticks":false,
+                          "offset":5,
+                          "encode":{
+                              "grid":{
+                                  "update":{
+                                      "stroke":{"signal":"datum.value % 10 == 0 ? '#dddddd' : '#ffffff'"},
+                                      "strokeWidth":{"value":1}
+                                  }
+                              },
+                              "labels":{
+                                  "update":{
+                                      "text":[
+                                          {"test":"is_narrow", "signal": 'datum.value % 10 == 0 ? datum.value : ""'},
+                                          {"signal": 'datum.value % 10 == 0 ? datum.value : "\'" + substring(toString(datum.value),2)'}
+                                      ],
+                                      "angle":{"signal":"is_narrow ? 0 : -45"},
+                                      "align":{"signal":"is_narrow ? 'center' : 'right'"},
+                                  }
+                              }
+                          }
+                      },
+                      {
+                          "orient": "left",
+                          "scale": "y", 
+                          "grid":true, 
+                          "domain":false, 
+                          "format":",.0f", 
+                          "tickCount":4, 
+                          "ticks":false, 
+                          "offset":5,
+                          "encode":{
+                              "grid":{
+                                  "update":{
+                                      "stroke":{"signal":"datum.value === 0 ? '#333333' : '#dddddd'"},
+                                      "strokeWidth":{"value":1}
+                                  }
+                              }
                           }
                       }
-                  }
+                  ],
               },
-              {"orient": "left", "scale": "y", "grid":true, "format":",.0%"}
-          ],
-
-          "marks": [
-
               {
-                  "type": "line",
-                  "from": {"data": "table"},
-                  "encode": {
-                      "enter": {
-                          "stroke": {"value":"#00649F"},
-                          "strokeWidth": {"value": 3},
-                          "interpolate": {"value": "linear"},
-                          "strokeOpacity": {"value": 1},
-                          "strokeCap": {"value":"round"},
-                          "strokeJoin": {"value":"round"}
-                      },
-                      "update": {
-                          "x": {"scale": "x", "field": "year"},
-                          "y": {"scale": "y", "field": "value"},
-                          "defined": {"signal":"datum.value != null"}
-                      }
-                  }
+                  "name": "g_footer",
+                  "type": "group",
+                  "marks": []
               }
           ]
 
       }
   }
 
+  var emptyOn = dispatch("start", "end", "cancel", "interrupt");
+  var emptyTween = [];
+
+  var CREATED = 0;
+  var SCHEDULED = 1;
+  var STARTING = 2;
+  var STARTED = 3;
+  var RUNNING = 4;
+  var ENDING = 5;
+  var ENDED = 6;
+
+  function schedule(node, name, id, index, group, timing) {
+    var schedules = node.__transition;
+    if (!schedules) node.__transition = {};
+    else if (id in schedules) return;
+    create(node, id, {
+      name: name,
+      index: index, // For context during callback.
+      group: group, // For context during callback.
+      on: emptyOn,
+      tween: emptyTween,
+      time: timing.time,
+      delay: timing.delay,
+      duration: timing.duration,
+      ease: timing.ease,
+      timer: null,
+      state: CREATED
+    });
+  }
+
+  function init(node, id) {
+    var schedule = get(node, id);
+    if (schedule.state > CREATED) throw new Error("too late; already scheduled");
+    return schedule;
+  }
+
+  function set(node, id) {
+    var schedule = get(node, id);
+    if (schedule.state > STARTED) throw new Error("too late; already running");
+    return schedule;
+  }
+
+  function get(node, id) {
+    var schedule = node.__transition;
+    if (!schedule || !(schedule = schedule[id])) throw new Error("transition not found");
+    return schedule;
+  }
+
+  function create(node, id, self) {
+    var schedules = node.__transition,
+        tween;
+
+    // Initialize the self timer when the transition is created.
+    // Note the actual delay is not known until the first callback!
+    schedules[id] = self;
+    self.timer = timer$1(schedule, 0, self.time);
+
+    function schedule(elapsed) {
+      self.state = SCHEDULED;
+      self.timer.restart(start, self.delay, self.time);
+
+      // If the elapsed delay is less than our first sleep, start immediately.
+      if (self.delay <= elapsed) start(elapsed - self.delay);
+    }
+
+    function start(elapsed) {
+      var i, j, n, o;
+
+      // If the state is not SCHEDULED, then we previously errored on start.
+      if (self.state !== SCHEDULED) return stop();
+
+      for (i in schedules) {
+        o = schedules[i];
+        if (o.name !== self.name) continue;
+
+        // While this element already has a starting transition during this frame,
+        // defer starting an interrupting transition until that transition has a
+        // chance to tick (and possibly end); see d3/d3-transition#54!
+        if (o.state === STARTED) return timeout(start);
+
+        // Interrupt the active transition, if any.
+        if (o.state === RUNNING) {
+          o.state = ENDED;
+          o.timer.stop();
+          o.on.call("interrupt", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+
+        // Cancel any pre-empted transitions.
+        else if (+i < id) {
+          o.state = ENDED;
+          o.timer.stop();
+          o.on.call("cancel", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+      }
+
+      // Defer the first tick to end of the current frame; see d3/d3#1576.
+      // Note the transition may be canceled after start and before the first tick!
+      // Note this must be scheduled before the start event; see d3/d3-transition#16!
+      // Assuming this is successful, subsequent callbacks go straight to tick.
+      timeout(function() {
+        if (self.state === STARTED) {
+          self.state = RUNNING;
+          self.timer.restart(tick, self.delay, self.time);
+          tick(elapsed);
+        }
+      });
+
+      // Dispatch the start event.
+      // Note this must be done before the tween are initialized.
+      self.state = STARTING;
+      self.on.call("start", node, node.__data__, self.index, self.group);
+      if (self.state !== STARTING) return; // interrupted
+      self.state = STARTED;
+
+      // Initialize the tween, deleting null tween.
+      tween = new Array(n = self.tween.length);
+      for (i = 0, j = -1; i < n; ++i) {
+        if (o = self.tween[i].value.call(node, node.__data__, self.index, self.group)) {
+          tween[++j] = o;
+        }
+      }
+      tween.length = j + 1;
+    }
+
+    function tick(elapsed) {
+      var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING, 1),
+          i = -1,
+          n = tween.length;
+
+      while (++i < n) {
+        tween[i].call(node, t);
+      }
+
+      // Dispatch the end event.
+      if (self.state === ENDING) {
+        self.on.call("end", node, node.__data__, self.index, self.group);
+        stop();
+      }
+    }
+
+    function stop() {
+      self.state = ENDED;
+      self.timer.stop();
+      delete schedules[id];
+      for (var i in schedules) return; // eslint-disable-line no-unused-vars
+      delete node.__transition;
+    }
+  }
+
+  function interrupt(node, name) {
+    var schedules = node.__transition,
+        schedule,
+        active,
+        empty = true,
+        i;
+
+    if (!schedules) return;
+
+    name = name == null ? null : name + "";
+
+    for (i in schedules) {
+      if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
+      active = schedule.state > STARTING && schedule.state < ENDING;
+      schedule.state = ENDED;
+      schedule.timer.stop();
+      schedule.on.call(active ? "interrupt" : "cancel", node, node.__data__, schedule.index, schedule.group);
+      delete schedules[i];
+    }
+
+    if (empty) delete node.__transition;
+  }
+
+  function selection_interrupt(name) {
+    return this.each(function() {
+      interrupt(this, name);
+    });
+  }
+
+  function tweenRemove(id, name) {
+    var tween0, tween1;
+    return function() {
+      var schedule = set(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = tween0 = tween;
+        for (var i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1 = tween1.slice();
+            tween1.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function tweenFunction(id, name, value) {
+    var tween0, tween1;
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      var schedule = set(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = (tween0 = tween).slice();
+        for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1[i] = t;
+            break;
+          }
+        }
+        if (i === n) tween1.push(t);
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function transition_tween(name, value) {
+    var id = this._id;
+
+    name += "";
+
+    if (arguments.length < 2) {
+      var tween = get(this.node(), id).tween;
+      for (var i = 0, n = tween.length, t; i < n; ++i) {
+        if ((t = tween[i]).name === name) {
+          return t.value;
+        }
+      }
+      return null;
+    }
+
+    return this.each((value == null ? tweenRemove : tweenFunction)(id, name, value));
+  }
+
+  function tweenValue(transition, name, value) {
+    var id = transition._id;
+
+    transition.each(function() {
+      var schedule = set(this, id);
+      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+    });
+
+    return function(node) {
+      return get(node, id).value[name];
+    };
+  }
+
+  function interpolate(a, b) {
+    var c;
+    return (typeof b === "number" ? interpolateNumber
+        : b instanceof color$2 ? interpolateRgb
+        : (c = color$2(b)) ? (b = c, interpolateRgb)
+        : interpolateString)(a, b);
+  }
+
+  function attrRemove(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant(name, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = this.getAttribute(name);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function attrConstantNS(fullname, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = this.getAttributeNS(fullname.space, fullname.local);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function attrFunction(name, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null) return void this.removeAttribute(name);
+      string0 = this.getAttribute(name);
+      string1 = value1 + "";
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function attrFunctionNS(fullname, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
+      string0 = this.getAttributeNS(fullname.space, fullname.local);
+      string1 = value1 + "";
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function transition_attr(name, value) {
+    var fullname = namespace(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate;
+    return this.attrTween(name, typeof value === "function"
+        ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value))
+        : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname)
+        : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value));
+  }
+
+  function attrInterpolate(name, i) {
+    return function(t) {
+      this.setAttribute(name, i.call(this, t));
+    };
+  }
+
+  function attrInterpolateNS(fullname, i) {
+    return function(t) {
+      this.setAttributeNS(fullname.space, fullname.local, i.call(this, t));
+    };
+  }
+
+  function attrTweenNS(fullname, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && attrInterpolateNS(fullname, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function attrTween(name, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && attrInterpolate(name, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_attrTween(name, value) {
+    var key = "attr." + name;
+    if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    var fullname = namespace(name);
+    return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
+  }
+
+  function delayFunction(id, value) {
+    return function() {
+      init(this, id).delay = +value.apply(this, arguments);
+    };
+  }
+
+  function delayConstant(id, value) {
+    return value = +value, function() {
+      init(this, id).delay = value;
+    };
+  }
+
+  function transition_delay(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each((typeof value === "function"
+            ? delayFunction
+            : delayConstant)(id, value))
+        : get(this.node(), id).delay;
+  }
+
+  function durationFunction(id, value) {
+    return function() {
+      set(this, id).duration = +value.apply(this, arguments);
+    };
+  }
+
+  function durationConstant(id, value) {
+    return value = +value, function() {
+      set(this, id).duration = value;
+    };
+  }
+
+  function transition_duration(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each((typeof value === "function"
+            ? durationFunction
+            : durationConstant)(id, value))
+        : get(this.node(), id).duration;
+  }
+
+  function easeConstant(id, value) {
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      set(this, id).ease = value;
+    };
+  }
+
+  function transition_ease(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each(easeConstant(id, value))
+        : get(this.node(), id).ease;
+  }
+
+  function easeVarying(id, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (typeof v !== "function") throw new Error;
+      set(this, id).ease = v;
+    };
+  }
+
+  function transition_easeVarying(value) {
+    if (typeof value !== "function") throw new Error;
+    return this.each(easeVarying(this._id, value));
+  }
+
+  function transition_filter(match) {
+    if (typeof match !== "function") match = matcher(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Transition(subgroups, this._parents, this._name, this._id);
+  }
+
+  function transition_merge(transition) {
+    if (transition._id !== this._id) throw new Error;
+
+    for (var groups0 = this._groups, groups1 = transition._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Transition(merges, this._parents, this._name, this._id);
+  }
+
+  function start(name) {
+    return (name + "").trim().split(/^|\s+/).every(function(t) {
+      var i = t.indexOf(".");
+      if (i >= 0) t = t.slice(0, i);
+      return !t || t === "start";
+    });
+  }
+
+  function onFunction(id, name, listener) {
+    var on0, on1, sit = start(name) ? init : set;
+    return function() {
+      var schedule = sit(this, id),
+          on = schedule.on;
+
+      // If this node shared a dispatch with the previous node,
+      // just assign the updated shared dispatch and we’re done!
+      // Otherwise, copy-on-write.
+      if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
+
+      schedule.on = on1;
+    };
+  }
+
+  function transition_on(name, listener) {
+    var id = this._id;
+
+    return arguments.length < 2
+        ? get(this.node(), id).on.on(name)
+        : this.each(onFunction(id, name, listener));
+  }
+
+  function removeFunction(id) {
+    return function() {
+      var parent = this.parentNode;
+      for (var i in this.__transition) if (+i !== id) return;
+      if (parent) parent.removeChild(this);
+    };
+  }
+
+  function transition_remove() {
+    return this.on("end.remove", removeFunction(this._id));
+  }
+
+  function transition_select(select) {
+    var name = this._name,
+        id = this._id;
+
+    if (typeof select !== "function") select = selector(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+          schedule(subgroup[i], name, id, i, subgroup, get(node, id));
+        }
+      }
+    }
+
+    return new Transition(subgroups, this._parents, name, id);
+  }
+
+  function transition_selectAll(select) {
+    var name = this._name,
+        id = this._id;
+
+    if (typeof select !== "function") select = selectorAll(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          for (var children = select.call(node, node.__data__, i, group), child, inherit = get(node, id), k = 0, l = children.length; k < l; ++k) {
+            if (child = children[k]) {
+              schedule(child, name, id, k, children, inherit);
+            }
+          }
+          subgroups.push(children);
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Transition(subgroups, parents, name, id);
+  }
+
+  var Selection = selection.prototype.constructor;
+
+  function transition_selection() {
+    return new Selection(this._groups, this._parents);
+  }
+
+  function styleNull(name, interpolate) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0 = styleValue(this, name),
+          string1 = (this.style.removeProperty(name), styleValue(this, name));
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, string10 = string1);
+    };
+  }
+
+  function styleRemove(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant(name, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = styleValue(this, name);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function styleFunction(name, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0 = styleValue(this, name),
+          value1 = value(this),
+          string1 = value1 + "";
+      if (value1 == null) string1 = value1 = (this.style.removeProperty(name), styleValue(this, name));
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function styleMaybeRemove(id, name) {
+    var on0, on1, listener0, key = "style." + name, event = "end." + key, remove;
+    return function() {
+      var schedule = set(this, id),
+          on = schedule.on,
+          listener = schedule.value[key] == null ? remove || (remove = styleRemove(name)) : undefined;
+
+      // If this node shared a dispatch with the previous node,
+      // just assign the updated shared dispatch and we’re done!
+      // Otherwise, copy-on-write.
+      if (on !== on0 || listener0 !== listener) (on1 = (on0 = on).copy()).on(event, listener0 = listener);
+
+      schedule.on = on1;
+    };
+  }
+
+  function transition_style(name, value, priority) {
+    var i = (name += "") === "transform" ? interpolateTransformCss : interpolate;
+    return value == null ? this
+        .styleTween(name, styleNull(name, i))
+        .on("end.style." + name, styleRemove(name))
+      : typeof value === "function" ? this
+        .styleTween(name, styleFunction(name, i, tweenValue(this, "style." + name, value)))
+        .each(styleMaybeRemove(this._id, name))
+      : this
+        .styleTween(name, styleConstant(name, i, value), priority)
+        .on("end.style." + name, null);
+  }
+
+  function styleInterpolate(name, i, priority) {
+    return function(t) {
+      this.style.setProperty(name, i.call(this, t), priority);
+    };
+  }
+
+  function styleTween(name, value, priority) {
+    var t, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t = (i0 = i) && styleInterpolate(name, i, priority);
+      return t;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_styleTween(name, value, priority) {
+    var key = "style." + (name += "");
+    if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+  }
+
+  function textConstant(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction(value) {
+    return function() {
+      var value1 = value(this);
+      this.textContent = value1 == null ? "" : value1;
+    };
+  }
+
+  function transition_text(value) {
+    return this.tween("text", typeof value === "function"
+        ? textFunction(tweenValue(this, "text", value))
+        : textConstant(value == null ? "" : value + ""));
+  }
+
+  function textInterpolate(i) {
+    return function(t) {
+      this.textContent = i.call(this, t);
+    };
+  }
+
+  function textTween(value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && textInterpolate(i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_textTween(value) {
+    var key = "text";
+    if (arguments.length < 1) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    return this.tween(key, textTween(value));
+  }
+
+  function transition_transition() {
+    var name = this._name,
+        id0 = this._id,
+        id1 = newId();
+
+    for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          var inherit = get(node, id0);
+          schedule(node, name, id1, i, group, {
+            time: inherit.time + inherit.delay + inherit.duration,
+            delay: 0,
+            duration: inherit.duration,
+            ease: inherit.ease
+          });
+        }
+      }
+    }
+
+    return new Transition(groups, this._parents, name, id1);
+  }
+
+  function transition_end() {
+    var on0, on1, that = this, id = that._id, size = that.size();
+    return new Promise(function(resolve, reject) {
+      var cancel = {value: reject},
+          end = {value: function() { if (--size === 0) resolve(); }};
+
+      that.each(function() {
+        var schedule = set(this, id),
+            on = schedule.on;
+
+        // If this node shared a dispatch with the previous node,
+        // just assign the updated shared dispatch and we’re done!
+        // Otherwise, copy-on-write.
+        if (on !== on0) {
+          on1 = (on0 = on).copy();
+          on1._.cancel.push(cancel);
+          on1._.interrupt.push(cancel);
+          on1._.end.push(end);
+        }
+
+        schedule.on = on1;
+      });
+
+      // The selection was empty, resolve end immediately
+      if (size === 0) resolve();
+    });
+  }
+
+  var id = 0;
+
+  function Transition(groups, parents, name, id) {
+    this._groups = groups;
+    this._parents = parents;
+    this._name = name;
+    this._id = id;
+  }
+
+  function newId() {
+    return ++id;
+  }
+
+  var selection_prototype = selection.prototype;
+
+  Transition.prototype = {
+    constructor: Transition,
+    select: transition_select,
+    selectAll: transition_selectAll,
+    selectChild: selection_prototype.selectChild,
+    selectChildren: selection_prototype.selectChildren,
+    filter: transition_filter,
+    merge: transition_merge,
+    selection: transition_selection,
+    transition: transition_transition,
+    call: selection_prototype.call,
+    nodes: selection_prototype.nodes,
+    node: selection_prototype.node,
+    size: selection_prototype.size,
+    empty: selection_prototype.empty,
+    each: selection_prototype.each,
+    on: transition_on,
+    attr: transition_attr,
+    attrTween: transition_attrTween,
+    style: transition_style,
+    styleTween: transition_styleTween,
+    text: transition_text,
+    textTween: transition_textTween,
+    remove: transition_remove,
+    tween: transition_tween,
+    delay: transition_delay,
+    duration: transition_duration,
+    ease: transition_ease,
+    easeVarying: transition_easeVarying,
+    end: transition_end,
+    [Symbol.iterator]: selection_prototype[Symbol.iterator]
+  };
+
+  function cubicInOut(t) {
+    return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+  }
+
+  var defaultTiming = {
+    time: null, // Set on use.
+    delay: 0,
+    duration: 250,
+    ease: cubicInOut
+  };
+
+  function inherit(node, id) {
+    var timing;
+    while (!(timing = node.__transition) || !(timing = timing[id])) {
+      if (!(node = node.parentNode)) {
+        throw new Error(`transition ${id} not found`);
+      }
+    }
+    return timing;
+  }
+
+  function selection_transition(name) {
+    var id,
+        timing;
+
+    if (name instanceof Transition) {
+      id = name._id, name = name._name;
+    } else {
+      id = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+    }
+
+    for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          schedule(node, name, id, i, group, timing || inherit(node, id));
+        }
+      }
+    }
+
+    return new Transition(groups, this._parents, name, id);
+  }
+
+  selection.prototype.interrupt = selection_interrupt;
+  selection.prototype.transition = selection_transition;
+
+  function responseJson(response) {
+    if (!response.ok) throw new Error(response.status + " " + response.statusText);
+    if (response.status === 204 || response.status === 205) return;
+    return response.json();
+  }
+
+  function json(input, init) {
+    return fetch(input, init).then(responseJson);
+  }
+
+  function Transform(k, x, y) {
+    this.k = k;
+    this.x = x;
+    this.y = y;
+  }
+
+  Transform.prototype = {
+    constructor: Transform,
+    scale: function(k) {
+      return k === 1 ? this : new Transform(this.k * k, this.x, this.y);
+    },
+    translate: function(x, y) {
+      return x === 0 & y === 0 ? this : new Transform(this.k, this.x + this.k * x, this.y + this.k * y);
+    },
+    apply: function(point) {
+      return [point[0] * this.k + this.x, point[1] * this.k + this.y];
+    },
+    applyX: function(x) {
+      return x * this.k + this.x;
+    },
+    applyY: function(y) {
+      return y * this.k + this.y;
+    },
+    invert: function(location) {
+      return [(location[0] - this.x) / this.k, (location[1] - this.y) / this.k];
+    },
+    invertX: function(x) {
+      return (x - this.x) / this.k;
+    },
+    invertY: function(y) {
+      return (y - this.y) / this.k;
+    },
+    rescaleX: function(x) {
+      return x.copy().domain(x.range().map(this.invertX, this).map(x.invert, x));
+    },
+    rescaleY: function(y) {
+      return y.copy().domain(y.range().map(this.invertY, this).map(y.invert, y));
+    },
+    toString: function() {
+      return "translate(" + this.x + "," + this.y + ") scale(" + this.k + ")";
+    }
+  };
+
+  new Transform(1, 0, 0);
+
+  Transform.prototype;
+
+  //dev
+  let url = {root: "root_url"};
+
+  url.root = "./";
+
+  url.assets = url.root + "assets/";
+  url.json = url.assets;
+  url.js = url.assets;
+
   (function(){
 
-      new TrendLine(document.getElementById("chart1"));
+      let meta = json(url.assets + "metadata.json");
+      let alldata = json(url.assets + "all_data.json");
+      let container = select$1("#chart-wrapper").append("div").attr("class","flex-container flex-50 first-100");
+      
+      let current_state = "AL";
+      let charts = [];
+
+      Promise.all([meta, alldata]).then(md => {
+          let META = md[0];
+          let DATA = md[1];
+
+          META.allvars.forEach(v => {
+              charts.push({
+                  indicator:v,
+                  chart: new TrendLine(container.node(), v==="poverty_x3")
+              });
+          });
+
+          function update(){
+              charts.forEach(pkg => {
+                  let state = [];
+                  let us = [];
+
+                  if(pkg.indicator == "poverty_x3"){
+                      state = (DATA.poverty[current_state]).concat(DATA.low_income[current_state], DATA.deep_poverty[current_state]);
+                      us = (DATA.poverty.US).concat(DATA.low_income.US, DATA.deep_poverty.US);
+                  }
+                  else {
+                      state = DATA[pkg.indicator][current_state];
+                      us = DATA[pkg.indicator].US;
+                  }
+
+                  pkg.chart.data(us.concat(state));
+                  pkg.chart.signal("indicator_name",META.varnames[pkg.indicator]);
+              });
+          }
+
+          //initialize
+          update();
+
+          let dropdown = select$1("#controls").append("select");
+          dropdown.selectAll("option").data(Object.entries(DATA.poverty).map(d=>d[0]))
+                  .join("option").text(t=>t).attr("value",v=>v);
+
+          dropdown.on("change",function(){
+              current_state = this.value;
+              update();
+          });
+      });
+
       
   })();
 

@@ -1,0 +1,65 @@
+p{
+    margin:0rem 0rem 1rem 0rem;
+}
+
+div{
+    box-sizing: border-box;
+}
+
+.flex-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+}
+
+.flex-container.flex-50 > div{
+    flex-basis:48%;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:2rem;
+}
+
+.flex-container.first-100 > div:first-child{
+    flex-basis:100%;
+}
+
+.c-fix:after{
+    display:table;
+    content:"";
+    clear:both;
+}
+
+.flex-container.chart-wrapper{
+    flex-wrap: nowrap;
+}
+
+.flex-container.chart-wrapper > div{
+    width:32%;
+}
+
+.flex-container.chart-wrapper > div:first-child{
+    width:65%;
+    padding:15px 10px;
+    background-color:#fafafa;
+    border: 1px solid #dddddd;
+    border-radius:5px;
+}
+
+/*big chart has different proportions*/
+.flex-container.chart-wrapper.big-chart > div{
+    width:25%;
+}
+
+.flex-container.chart-wrapper.big-chart > div:first-child{
+    width:73%;
+}
+
+.role-axis .role-axis-grid line{
+    shape-rendering: crispEdges;
+}
+
+@media screen and (max-width: 950px) {
+    .flex-container.flex-50 > div{
+        flex-basis: 100%;
+    }
+  }

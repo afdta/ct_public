@@ -3,8 +3,9 @@ let url = {root: "root_url"}
 
 url.root = "./";
 
-url.json = url.root + "assets/json/";
-url.js = url.root + "assets/js/"
+url.assets = url.root + "assets/";
+url.json = url.assets;
+url.js = url.assets;
 
 
 export default url;
