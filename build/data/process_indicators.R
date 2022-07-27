@@ -7,12 +7,12 @@ library(jsonlite)
 
 #METADATA
 ##NEED A META DATA FILE WITH INDICATOR DEFS
-
+source("~/Projects/DistrictAnalytics/child_trends/state-poverty-tool/build/data/states.R")
 
 
 pulltab <- function(tabname, varid){
   id <- enquo(varid)
-  xl_ <- "~/Projects/DistrictAnalytics/child_trends/state-poverty-tool/build/data/state_nat_1980_2020_draft.xlsx" 
+  xl_ <- "~/Projects/DistrictAnalytics/child_trends/state-poverty-tool/build/data/avg3year.xlsx" 
   xl <- read_xlsx(xl_, sheet=tabname)
   cat("Pulled '"); cat(tabname); cat("'\nObs: "); cat(nrow(xl)); cat("\nVars: "); cat(names(xl)); cat("\n------------------------\n\n");
   
@@ -47,12 +47,25 @@ metadata <- list(
                   deep_poverty="Deep poverty",
                   gdp_pc="GDP per capita", 
                   median_wage="Median wage",
-                  inequality="Inequality",
+                  inequality="Wage inequality",
                   urate="Unemployment rate",
                   f_lfp="Female labor force participation rate", 
-                  edu="Percengate of population... (what is edu var)?", 
-                  parent_01="Single parent (0 or 1)", 
-                  teen_birth="Teen birth rate")
+                  edu="Share of population with HS degree", 
+                  parent_01="Share of children living with less than two parents", 
+                  teen_birth="Teen birth rate"),
+  definitions = list(poverty_x3="<b>Three poverty levels</b><br />Children in households with resources below 100% of the Supplemental Poverty Measure (SPM) threshold are considered to live “in poverty.” Children below 50% of the threshold are considered “in deep poverty.” Children below 200% of the threshold are considered in “low-income” families.",
+                     poverty="In poverty",
+                     low_income="Low-income",
+                     deep_poverty="Deep poverty",
+                     gdp_pc="<b>Gross Domestic Product (GDP) per capita</b> is the state’s GDP divided by its population. All estimates are in 2019 dollars. <br /><br /><i>Source: <a href='https://fred.stlouisfed.org/categories/27281'>FRED</a></i>", 
+                     median_wage="<b>Real median wage</b> is the wage at the 50th percentile of the state’s income distribution. Estimates are in 2019 dollars. <br /><br /><i>Source: Constructed from <a href='https://www.nber.org/research/data/current-population-survey-cps-merged-outgoing-rotation-group-earnings-data'>CPS MORG</a> data.</i>",
+                     inequality="<b>Wage inequality</b> is the ratio of wages in the 90th percentile of the wage distribution to those in the 10th percentile. <br /><br /><i>Source: Constructed from <a href='https://www.nber.org/research/data/current-population-survey-cps-merged-outgoing-rotation-group-earnings-data'>CPS MORG</a> data</i>",
+                     urate="<b>The unemployment rate</b> is the percentage of the labor force ages 16 and older that is unemployed and looking for a job. <br /><br /><i>Source: <a href='https://www.bls.gov/sae/'>BLS</a>.</i>",
+                     f_lfp="<b>Female labor force participation</b> is the percentage of women ages 16-64 who are employed or looking for work. <br /><br /><i>Source: <a href='https://www.bls.gov/opub/reports/womens-databook/2020/home.htm'>BLS</a></i>", 
+                     edu="<b>Share of population with a high school degree</b> is the percentage of the population ages 25 and older with at least a high school degree or the equivalent. <br /><br /><i>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC</a> data.</i>", 
+                     parent_01="<b>Share of children living with less than two parents</b> is the percentage of children from birth to age 17 who live with one or no parents. <br /><br /><i>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC</a> data.</i>",
+                     teen_birth="<b>Teen birth rate</b> is the number of births per 1,000 females ages 15-19. <br /><br /><i>Source: <a href='https://www.cdc.gov/nchs/data_access/VitalStatsOnline.htm'>Center for Disease Control</a>.</i>"),
+  states = usps
 )
 
 write_json(metadata, "~/Projects/DistrictAnalytics/child_trends/state-poverty-tool/assets/metadata.json", digits=5, pretty=TRUE, na="null", auto_unbox=TRUE)
