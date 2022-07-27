@@ -6,7 +6,7 @@ class TrendLine {
     width = 480;
     height = 220;
 
-    constructor(container, is_bigchart) {
+    constructor(container, is_bigchart, definition) {
 
         //edit the spec before parsing and creating the view
         if(!!is_bigchart){
@@ -24,7 +24,7 @@ class TrendLine {
         this.view.initialize(this.container).renderer("svg").runAsync();
         this.view.resize();
 
-        this.definition.html("<p><b>Definition</b><br/><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis malesuada massa sit amet sagittis. In elementum feugiat odio et fringilla.</i></p>")
+        this.definition.html("<p>" + definition + "</p>")
  
     }
 
@@ -64,7 +64,9 @@ class TrendLine {
         "title":{
             "text":{"signal":"indicator_name"},
             "anchor":"start",
-            "fontSize":18,
+            "fontSize":15,
+            "fontWeight":400,
+            "offset":10,
             "limit":{"signal":"width"}
         },
 
@@ -111,6 +113,10 @@ class TrendLine {
             {
                 "name":"indicator_name",
                 "value":"Indicator"
+            },
+            {
+                "name":"selected_state",
+                "value":"N/A"
             }
         ],
 
@@ -118,6 +124,16 @@ class TrendLine {
             {
                 "name": "table",
                 "values": [{"value":1, "year":1900}, {"value":2, "year":1901}]
+            },
+            {
+                "name": "y2020",
+                "source": "table",
+                "transform":[
+                    {
+                        "type":"filter",
+                        "expr":"datum.year == 2020"
+                    }
+                ]
             }
         ],
 
@@ -135,6 +151,18 @@ class TrendLine {
                 "nice": true,
                 "zero": true,
                 "domain": {"data": "table", "field": "value"}
+            },
+            {
+                "name":"stroke",
+                "type":"ordinal",
+                "domain":["US",{"signal":"selected_state"}],
+                "range":["#007cc2", "#0a355b"]
+            },
+            {
+                "name":"strokedash",
+                "type":"ordinal",
+                "domain":["US",{"signal":"selected_state"}],
+                "range":[[2,2], null]                
             }
         ],
 
@@ -213,6 +241,18 @@ class TrendLine {
                                 }
                             }
                         ]
+                    },
+                    {
+                        "type":"text",
+                        "from":{"data":"y2020"},
+                        "endoce":{
+                            "update":{
+                                "x":{"value":2020, "scale":"x"},
+                                "y":{"field":"value", "scale":"y"},
+                                "text":{"value":"2020 anno."}
+                            }
+                        }
+
                     }
                 ],
                 "axes": [
@@ -264,6 +304,21 @@ class TrendLine {
                         }
                     }
                 ],
+                "legends": [
+                    {
+                      "orient": "bottom",
+                      "stroke":"stroke",
+                      "values": ["US", {"signal":"selected_state"}],
+                      "symbolType": "stroke",
+                      "encode":{
+                        "symbols":{
+                            "update":{
+                                "strokeDash": {"field":"value", "scale":"strokedash"}
+                            }
+                        }
+                      }
+                    }
+                  ],
             },
             {
                 "name": "g_footer",

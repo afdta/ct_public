@@ -7,7 +7,7 @@ import { select } from "d3";
 
     let meta = json(url.assets + "metadata.json");
     let alldata = json(url.assets + "all_data.json");
-    let container = select("#chart-wrapper").append("div").attr("class","flex-container flex-50 first-100");
+    let container = select("#chart-wrapper").append("div").attr("class","flex-container flex-50");
     
     let current_state = "AL";
     let charts = [];
@@ -17,9 +17,11 @@ import { select } from "d3";
         let DATA = md[1];
 
         META.allvars.forEach(v => {
+            let chart = new TrendLine(container.node(), v==="poverty_x3" || v==="pov_reduction", META.definitions[v]);
+
             charts.push({
-                indicator:v,
-                chart: new TrendLine(container.node(), v==="poverty_x3")
+                indicator: v,
+                chart: chart
             })
         });
 
@@ -39,15 +41,19 @@ import { select } from "d3";
 
                 pkg.chart.data(us.concat(state));
                 pkg.chart.signal("indicator_name",META.varnames[pkg.indicator]);
+                pkg.chart.signal("selected_state", current_state);
             })
         }
 
         //initialize
         update();
 
-        let dropdown = select("#controls").append("select");
-        dropdown.selectAll("option").data(Object.entries(DATA.poverty).map(d=>d[0]))
-                .join("option").text(t=>t).attr("value",v=>v);
+        let controls = select("#controls");
+        let dropdown = controls.append("select").style("font-size","18px").style("padding","5px 10px");
+        dropdown.selectAll("option").data(META.states)
+                .join("option").text(d=>d.name).attr("value",d=>d.usps);
+
+        dropdown.append("option").text("United States").attr("value","US");
 
         dropdown.on("change",function(){
             current_state = this.value;

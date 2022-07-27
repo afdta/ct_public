@@ -45773,7 +45773,7 @@
       width = 480;
       height = 220;
 
-      constructor(container, is_bigchart) {
+      constructor(container, is_bigchart, definition) {
 
           //edit the spec before parsing and creating the view
           if(!!is_bigchart){
@@ -45791,7 +45791,7 @@
           this.view.initialize(this.container).renderer("svg").runAsync();
           this.view.resize();
 
-          this.definition.html("<p><b>Definition</b><br/><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis malesuada massa sit amet sagittis. In elementum feugiat odio et fringilla.</i></p>");
+          this.definition.html("<p>" + definition + "</p>");
    
       }
 
@@ -45831,7 +45831,9 @@
           "title":{
               "text":{"signal":"indicator_name"},
               "anchor":"start",
-              "fontSize":18,
+              "fontSize":15,
+              "fontWeight":400,
+              "offset":10,
               "limit":{"signal":"width"}
           },
 
@@ -45878,6 +45880,10 @@
               {
                   "name":"indicator_name",
                   "value":"Indicator"
+              },
+              {
+                  "name":"selected_state",
+                  "value":"N/A"
               }
           ],
 
@@ -45885,6 +45891,16 @@
               {
                   "name": "table",
                   "values": [{"value":1, "year":1900}, {"value":2, "year":1901}]
+              },
+              {
+                  "name": "y2020",
+                  "source": "table",
+                  "transform":[
+                      {
+                          "type":"filter",
+                          "expr":"datum.year == 2020"
+                      }
+                  ]
               }
           ],
 
@@ -45902,6 +45918,18 @@
                   "nice": true,
                   "zero": true,
                   "domain": {"data": "table", "field": "value"}
+              },
+              {
+                  "name":"stroke",
+                  "type":"ordinal",
+                  "domain":["US",{"signal":"selected_state"}],
+                  "range":["#007cc2", "#0a355b"]
+              },
+              {
+                  "name":"strokedash",
+                  "type":"ordinal",
+                  "domain":["US",{"signal":"selected_state"}],
+                  "range":[[2,2], null]                
               }
           ],
 
@@ -45980,6 +46008,18 @@
                                   }
                               }
                           ]
+                      },
+                      {
+                          "type":"text",
+                          "from":{"data":"y2020"},
+                          "endoce":{
+                              "update":{
+                                  "x":{"value":2020, "scale":"x"},
+                                  "y":{"field":"value", "scale":"y"},
+                                  "text":{"value":"2020 anno."}
+                              }
+                          }
+
                       }
                   ],
                   "axes": [
@@ -46031,6 +46071,21 @@
                           }
                       }
                   ],
+                  "legends": [
+                      {
+                        "orient": "bottom",
+                        "stroke":"stroke",
+                        "values": ["US", {"signal":"selected_state"}],
+                        "symbolType": "stroke",
+                        "encode":{
+                          "symbols":{
+                              "update":{
+                                  "strokeDash": {"field":"value", "scale":"strokedash"}
+                              }
+                          }
+                        }
+                      }
+                    ],
               },
               {
                   "name": "g_footer",
@@ -46979,7 +47034,7 @@
 
       let meta = json(url.assets + "metadata.json");
       let alldata = json(url.assets + "all_data.json");
-      let container = select$1("#chart-wrapper").append("div").attr("class","flex-container flex-50 first-100");
+      let container = select$1("#chart-wrapper").append("div").attr("class","flex-container flex-50");
       
       let current_state = "AL";
       let charts = [];
@@ -46989,9 +47044,11 @@
           let DATA = md[1];
 
           META.allvars.forEach(v => {
+              let chart = new TrendLine(container.node(), v==="poverty_x3" || v==="pov_reduction", META.definitions[v]);
+
               charts.push({
-                  indicator:v,
-                  chart: new TrendLine(container.node(), v==="poverty_x3")
+                  indicator: v,
+                  chart: chart
               });
           });
 
@@ -47011,15 +47068,19 @@
 
                   pkg.chart.data(us.concat(state));
                   pkg.chart.signal("indicator_name",META.varnames[pkg.indicator]);
+                  pkg.chart.signal("selected_state", current_state);
               });
           }
 
           //initialize
           update();
 
-          let dropdown = select$1("#controls").append("select");
-          dropdown.selectAll("option").data(Object.entries(DATA.poverty).map(d=>d[0]))
-                  .join("option").text(t=>t).attr("value",v=>v);
+          let controls = select$1("#controls");
+          let dropdown = controls.append("select").style("font-size","18px").style("padding","5px 10px");
+          dropdown.selectAll("option").data(META.states)
+                  .join("option").text(d=>d.name).attr("value",d=>d.usps);
+
+          dropdown.append("option").text("United States").attr("value","US");
 
           dropdown.on("change",function(){
               current_state = this.value;

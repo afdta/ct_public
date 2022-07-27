@@ -1,5 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,700;1,400&display=swap');
+
+
+
+
 p{
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.5em;
     margin:0rem 0rem 1rem 0rem;
+    font-size:16px;
+}
+
+b{
+    font-family: inherit;
+    font-weight:700;
+}
+
+a{
+    color:#962573;
+    font-family:inherit;
+    text-decoration: none;
+    border-bottom:1px solid #962573;
+}
+
+text{
+    font-family: 'Montserrat', sans-serif;
 }
 
 div{
@@ -15,12 +39,6 @@ div{
 .flex-container.flex-50 > div{
     flex-basis:48%;
     position:relative;
-    overflow:hidden;
-    margin-bottom:2rem;
-}
-
-.flex-container.first-100 > div:first-child{
-    flex-basis:100%;
 }
 
 .c-fix:after{
@@ -31,6 +49,7 @@ div{
 
 .flex-container.chart-wrapper{
     flex-wrap: nowrap;
+    margin-bottom:3rem;
 }
 
 .flex-container.chart-wrapper > div{
@@ -40,12 +59,16 @@ div{
 .flex-container.chart-wrapper > div:first-child{
     width:65%;
     padding:15px 10px;
-    background-color:#fafafa;
+    background-color:#f0f0f0;
     border: 1px solid #dddddd;
     border-radius:5px;
 }
 
 /*big chart has different proportions*/
+.flex-container.chart-wrapper.big-chart{
+    flex-basis:100%;
+}
+
 .flex-container.chart-wrapper.big-chart > div{
     width:25%;
 }
@@ -56,6 +79,22 @@ div{
 
 .role-axis .role-axis-grid line{
     shape-rendering: crispEdges;
+}
+
+select{
+    margin-bottom:-1px;
+    border:1px solid #111111;
+}
+
+#controls{
+    margin:1rem 0rem 2rem 0rem;
+    position:sticky;
+    top:0px;
+    left:0px;
+    background:#ffffff;
+    z-index:10;
+    padding:5px 0px 0px 0px;
+    border-bottom:1px solid #111111;
 }
 
 @media screen and (max-width: 950px) {

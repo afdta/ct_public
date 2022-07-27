@@ -36,11 +36,12 @@ all_data$f_lfp <- pulltab("FLFP", "f_lfp")
 all_data$edu <- pulltab("Education", "edu")
 all_data$parent_01 <- pulltab("Zero or One Parent", "parent_01")
 all_data$teen_birth <- pulltab("Teen Birth", "teen_birth")
+all_data$pov_reduction <- pulltab("Reduction SSN", "pov_reduction")
 
 write_json(all_data, "~/Projects/DistrictAnalytics/child_trends/state-poverty-tool/assets/all_data.json", digits=5, pretty=TRUE, na="null")
 
 metadata <- list(
-  allvars = c("poverty_x3","gdp_pc", "median_wage","inequality", "urate", "f_lfp", "edu", "parent_01", "teen_birth"),
+  allvars = c("poverty_x3","gdp_pc", "median_wage","inequality", "urate", "f_lfp", "edu", "parent_01", "teen_birth", "pov_reduction"),
   varnames = list(poverty_x3="Poverty levels",
                   poverty="In poverty",
                   low_income="Los income",
@@ -52,7 +53,8 @@ metadata <- list(
                   f_lfp="Female labor force participation rate", 
                   edu="Share of population with HS degree", 
                   parent_01="Share of children living with less than two parents", 
-                  teen_birth="Teen birth rate"),
+                  teen_birth="Teen birth rate",
+                  pov_reduction="Poverty reduction"),
   definitions = list(poverty_x3="<b>Three poverty levels</b><br />Children in households with resources below 100% of the Supplemental Poverty Measure (SPM) threshold are considered to live “in poverty.” Children below 50% of the threshold are considered “in deep poverty.” Children below 200% of the threshold are considered in “low-income” families.",
                      poverty="In poverty",
                      low_income="Low-income",
@@ -64,7 +66,8 @@ metadata <- list(
                      f_lfp="<b>Female labor force participation</b> is the percentage of women ages 16-64 who are employed or looking for work. <br /><br /><i>Source: <a href='https://www.bls.gov/opub/reports/womens-databook/2020/home.htm'>BLS</a></i>", 
                      edu="<b>Share of population with a high school degree</b> is the percentage of the population ages 25 and older with at least a high school degree or the equivalent. <br /><br /><i>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC</a> data.</i>", 
                      parent_01="<b>Share of children living with less than two parents</b> is the percentage of children from birth to age 17 who live with one or no parents. <br /><br /><i>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC</a> data.</i>",
-                     teen_birth="<b>Teen birth rate</b> is the number of births per 1,000 females ages 15-19. <br /><br /><i>Source: <a href='https://www.cdc.gov/nchs/data_access/VitalStatsOnline.htm'>Center for Disease Control</a>.</i>"),
+                     teen_birth="<b>Teen birth rate</b> is the number of births per 1,000 females ages 15-19. <br /><br /><i>Source: <a href='https://www.cdc.gov/nchs/data_access/VitalStatsOnline.htm'>Center for Disease Control</a>.</i>",
+                     pov_reduction="<b>Poverty reduction</b> due to state and federal programs that make up the social safety net. <br /><br /><i>Source: <a href=''>...</a>.</i>"),
   states = usps
 )
 
