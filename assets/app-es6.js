@@ -45781,7 +45781,6 @@
           }
 
           this.wrap =  select$1(container).append("div")
-                                      .style("width","100%")
                                       .classed("flex-container",true)
                                       .classed("chart-wrapper",true)
                                       .classed("big-chart", this.big_chart_mutable.value);
@@ -45861,6 +45860,10 @@
                   "name":"width",
                   "update": "container_width"
               },
+              {
+                  "name":"extra_pad",
+                  "value":0
+              },
 
               this.big_chart_mutable,
 
@@ -45884,6 +45887,10 @@
               {
                   "name":"selected_state",
                   "value":"N/A"
+              },
+              {
+                  "name":"value_format",
+                  "value":",.1f"
               }
           ],
 
@@ -45898,9 +45905,37 @@
                   "transform":[
                       {
                           "type":"filter",
-                          "expr":"datum.year == 2020"
+                          "expr":"datum.year == 2020 && (datum.state_abbr != 'US' || selected_state == 'US')"
+                      },
+                      {
+                          "type":"formula",
+                          "expr":"format(datum.value, value_format)",
+                          "as":"label"
                       }
                   ]
+              },
+              {
+                  "name": "y1980",
+                  "source": "table",
+                  "transform":[
+                      {
+                          "type":"filter",
+                          "expr":"datum.year == 1980 && (datum.state_abbr != 'US' || selected_state == 'US')"
+                      },
+                      {
+                          "type":"filter",
+                          "expr":"datum.id==='poverty' || datum.id==='deep_poverty' || datum.id==='low_income'"
+                      },
+                      {
+                          "type":"formula",
+                          "expr":"scale('labeler', datum.id)",
+                          "as":"label"
+                      }
+                  ]
+              },
+              {
+                  "name":"anno_table",
+                  "source":["y1980","y2020"]
               }
           ],
 
@@ -45908,7 +45943,7 @@
               {
                   "name": "x",
                   "type": "point",
-                  "range": "width",
+                  "range": [{"signal":"extra_pad"}, {"signal":"width-20"}],
                   "domain": {"data": "table", "field": "year"}
               },
               {
@@ -45930,6 +45965,12 @@
                   "type":"ordinal",
                   "domain":["US",{"signal":"selected_state"}],
                   "range":[[2,2], null]                
+              },
+              {
+                  "name":"labeler",
+                  "type":"ordinal",
+                  "domain":["low_income","poverty","deep_poverty"],
+                  "range":["Low income","In poverty","Deep poverty"]
               }
           ],
 
@@ -46011,15 +46052,42 @@
                       },
                       {
                           "type":"text",
-                          "from":{"data":"y2020"},
-                          "endoce":{
+                          "name":"anno",
+                          "from":{"data":"anno_table"},
+                          "zindex":10,
+                          "encode":{
+
                               "update":{
-                                  "x":{"value":2020, "scale":"x"},
+                                  "fontWeight":{"value":"normal"},
+                                  "x":{"field":"year", "scale":"x"},
                                   "y":{"field":"value", "scale":"y"},
-                                  "text":{"value":"2020 anno."}
+                                  "text":{"signal":"datum.label"},
+                                  "baseline":{"value":"middle"},
+                                  "align":{"signal":"datum.year == 1980 ? 'right' : 'left'"},
+                                  "dx":{"signal":"datum.year == 1980 ? -6 : 6"},
+                                  "angle":{"signal":"datum.year == 1980 ? 0 : 0"}
                               }
                           }
-
+                      },
+                      {
+                          "type":"text",
+                          "from":{"data":"anno"},
+                          "zindex":9,
+                          "encode":{
+                              "update":{
+                                  "fontWeight":{"field":"fontWeight"},
+                                  "x":{"field":"x"},
+                                  "y":{"field":"y"},
+                                  "text":{"field":"text"},
+                                  "baseline":{"field":"baseline"},
+                                  "align":{"field":"align"},
+                                  "angle":{"field":"angle"},
+                                  "dx":{"field":"dx"},
+                                  "fill":{"value":"#ffffff"},
+                                  "stroke":{"value":"#ffffff"},
+                                  "strokeWidth":{"value":2}
+                              }
+                          }
                       }
                   ],
                   "axes": [
@@ -46075,8 +46143,10 @@
                       {
                         "orient": "bottom",
                         "stroke":"stroke",
+                        "direction":"horizontal",
                         "values": ["US", {"signal":"selected_state"}],
                         "symbolType": "stroke",
+                        "symbolSize":300,
                         "encode":{
                           "symbols":{
                               "update":{
@@ -47034,8 +47104,18 @@
 
       let meta = json(url.assets + "metadata.json");
       let alldata = json(url.assets + "all_data.json");
-      let container = select$1("#chart-wrapper").append("div").attr("class","flex-container flex-50");
+      let container0 = select$1("#chart-wrapper");
       
+      let container1 = container0.append("div").attr("class","flex-container flex-50");
+      let container2 = container0.append("div").attr("class","flex-container flex-50");
+      let container3 = container0.append("div").attr("class","flex-container flex-50");
+      
+      container2.append("div").classed("full-span",true)
+          .html("<h2>Economic, labor market, and demographic trends that may be related to changes in child poverty</h2>");
+
+      container3.append("div").classed("full-span",true)
+          .html("<h2>Trends in the role of the social safety net in reducing child poverty</h2>");
+
       let current_state = "AL";
       let charts = [];
 
@@ -47044,7 +47124,18 @@
           let DATA = md[1];
 
           META.allvars.forEach(v => {
-              let chart = new TrendLine(container.node(), v==="poverty_x3" || v==="pov_reduction", META.definitions[v]);
+              let node = container2.node();
+              let big_chart = false;
+              if (v==="pov_reduction"){
+                  node = container3.node();
+                  big_chart = true;
+              }
+              else if (v==="poverty_x3"){
+                  node = container1.node();
+                  big_chart = true;
+              }
+
+              let chart = new TrendLine(node, big_chart, META.definitions[v]);
 
               charts.push({
                   indicator: v,
@@ -47056,10 +47147,12 @@
               charts.forEach(pkg => {
                   let state = [];
                   let us = [];
+                  let extra_pad = 0;
 
                   if(pkg.indicator == "poverty_x3"){
                       state = (DATA.poverty[current_state]).concat(DATA.low_income[current_state], DATA.deep_poverty[current_state]);
                       us = (DATA.poverty.US).concat(DATA.low_income.US, DATA.deep_poverty.US);
+                      extra_pad = 70;
                   }
                   else {
                       state = DATA[pkg.indicator][current_state];
@@ -47069,6 +47162,7 @@
                   pkg.chart.data(us.concat(state));
                   pkg.chart.signal("indicator_name",META.varnames[pkg.indicator]);
                   pkg.chart.signal("selected_state", current_state);
+                  pkg.chart.signal("extra_pad", extra_pad);
               });
           }
 

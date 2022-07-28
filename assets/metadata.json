@@ -28,7 +28,7 @@
     "edu": "<b>Share of population with a high school degree<\/b> is the percentage of the population ages 25 and older with at least a high school degree or the equivalent. <br /><br /><i>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC<\/a> data.<\/i>",
     "parent_01": "<b>Share of children living with less than two parents<\/b> is the percentage of children from birth to age 17 who live with one or no parents. <br /><br /><i>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC<\/a> data.<\/i>",
     "teen_birth": "<b>Teen birth rate<\/b> is the number of births per 1,000 females ages 15-19. <br /><br /><i>Source: <a href='https://www.cdc.gov/nchs/data_access/VitalStatsOnline.htm'>Center for Disease Control<\/a>.<\/i>",
-    "pov_reduction": "<b>Poverty reduction<\/b> due to state and federal programs that make up the social safety net. <br /><br /><i>Source: <a href=''>...<\/a>.<\/i>"
+    "pov_reduction": "The social safety net plays an important role in reducing child poverty. We present the percentage point reduction in child poverty rates after including the cash value of federal tax and transfer programs, over time, holding all else equal and assuming no behavioral changes. <br /><br /><i>Source: <a href=''>...<\/a>.<\/i>"
   },
   "states": [
     {

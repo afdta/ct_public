@@ -10,6 +10,13 @@ p{
     font-size:16px;
 }
 
+h2{
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.5em;
+    margin:1rem 0rem 1rem 0rem;
+    font-size:25px;   
+}
+
 b{
     font-family: inherit;
     font-weight:700;
@@ -34,10 +41,11 @@ div{
     display:flex;
     flex-wrap:wrap;
     justify-content: space-between;
+    align-items: flex-start;
 }
 
 .flex-container.flex-50 > div{
-    flex-basis:48%;
+    width:48%;
     position:relative;
 }
 
@@ -64,9 +72,13 @@ div{
     border-radius:5px;
 }
 
+.flex-container > div.full-span{
+    width:100%;
+}
+
 /*big chart has different proportions*/
 .flex-container.chart-wrapper.big-chart{
-    flex-basis:100%;
+    width:100%;
 }
 
 .flex-container.chart-wrapper.big-chart > div{
@@ -99,6 +111,6 @@ select{
 
 @media screen and (max-width: 950px) {
     .flex-container.flex-50 > div{
-        flex-basis: 100%;
+        width: 100%;
     }
   }
