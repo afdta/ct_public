@@ -6,6 +6,46 @@ class TrendLine {
     width = 480;
     height = 220;
 
+    vega_font = "'Montserrat', sans-serif";
+    vega_font_color = "#272727";
+    vega_theme = {
+        "text":{
+            "font": this.vega_font,
+            "fontSize":16,
+            "fill":this.vega_font_color
+            },
+        "legend":{
+            "layout":{"anchor": "start", "margin":40},
+            "titleFontWeight": "700",
+            "titleColor": this.vega_font_color,
+            "labelColor": this.vega_font_color,
+            "titleFont": this.vega_font,
+            "titleFontSize": 16,
+            "labelFont": this.vega_font,
+            "labelFontSize": 16,
+            "columnPadding":7,
+            "rowPadding":7
+            },
+        "title":{
+            "fontWeight":"normal",
+            "font":this.vega_font,
+            "fontSize":16,
+            "fontWeight":400,
+            "offset":10
+        },
+        "axis":{
+            "labelFont": this.vega_font,
+            "labelFontSize": 13,
+            "labelColor": this.vega_font_color,
+            "titleFont": this.vega_font,
+            "titleColor": this.vega_font_color,
+            "titleFontWeight":"normal",
+            "titleFontSize":16,
+            "titlePadding":10,
+            "offset":10
+        }
+    }
+
     constructor(container, is_bigchart, definition) {
 
         //edit the spec before parsing and creating the view
@@ -19,7 +59,7 @@ class TrendLine {
                                     .classed("big-chart", this.big_chart_mutable.value);
         this.container = this.wrap.append("div").append("div").node();
         this.definition = this.wrap.append("div");
-        this.view = new View(parse(this.vega_spec));
+        this.view = new View(parse(this.vega_spec, this.vega_theme));
         this.view.initialize(this.container).renderer("svg").runAsync();
         this.view.resize();
 
@@ -54,7 +94,7 @@ class TrendLine {
         "autosize":{"type": "fit-x", "resize": false},
         "width": this.width,
         "height": this.height,
-        "padding": {"top":0,"left":0,"right":0, "bottom":0},
+        "padding": {"top":0,"left":5,"right":5, "bottom":0},
         "layout":{
             "columns":1,
             "align":"none",
@@ -63,9 +103,6 @@ class TrendLine {
         "title":{
             "text":{"signal":"indicator_name"},
             "anchor":"start",
-            "fontSize":15,
-            "fontWeight":400,
-            "offset":10,
             "limit":{"signal":"width"}
         },
 
@@ -124,6 +161,43 @@ class TrendLine {
             {
                 "name":"value_format",
                 "value":",.1f"
+            },
+            {
+                "name":"endyear",
+                "value":2020
+            },
+            {
+                "name":"scalerange",
+                "value":[10,20],
+                "update":"range('x_linear')"
+            },
+            {
+                "name": "indexYear",
+                "update": "endyear",
+                "on": [
+                  {
+                    "events": "mousemove",
+                    "update": "round(invert('x_linear', clamp(x('g_main'), scalerange[0], scalerange[1])))"
+                  },
+                  {
+                    "events": "mouseout",
+                    "update": "endyear"
+                  }
+                ]
+            },
+            {
+                "name": "isactive",
+                "update": "false",
+                "on": [
+                  {
+                    "events": "mousemove",
+                    "update": "true"
+                  },
+                  {
+                    "events": "mouseout",
+                    "update": "false"
+                  }
+                ]
             }
         ],
 
@@ -133,12 +207,12 @@ class TrendLine {
                 "values": [{"value":1, "year":1900}, {"value":2, "year":1901}]
             },
             {
-                "name": "y2020",
+                "name": "anno_table",
                 "source": "table",
                 "transform":[
                     {
                         "type":"filter",
-                        "expr":"datum.year == 2020 && (datum.state_abbr != 'US' || selected_state == 'US')"
+                        "expr":"datum.state_abbr != 'US' || selected_state == 'US'"
                     },
                     {
                         "type":"formula",
@@ -148,7 +222,7 @@ class TrendLine {
                 ]
             },
             {
-                "name": "y1980",
+                "name": "series_label",
                 "source": "table",
                 "transform":[
                     {
@@ -165,10 +239,6 @@ class TrendLine {
                         "as":"label"
                     }
                 ]
-            },
-            {
-                "name":"anno_table",
-                "source":["y1980","y2020"]
             }
         ],
 
@@ -176,6 +246,15 @@ class TrendLine {
             {
                 "name": "x",
                 "type": "point",
+                "zero": false,
+                "padding": 0,
+                "range": [{"signal":"extra_pad"}, {"signal":"width-20"}],
+                "domain": {"data": "table", "field": "year"}
+            },
+            {
+                "name": "x_linear",
+                "type": "linear",
+                "zero": false,
                 "range": [{"signal":"extra_pad"}, {"signal":"width-20"}],
                 "domain": {"data": "table", "field": "year"}
             },
@@ -203,7 +282,7 @@ class TrendLine {
                 "name":"labeler",
                 "type":"ordinal",
                 "domain":["low_income","poverty","deep_poverty"],
-                "range":["Low income","In poverty","Deep poverty"]
+                "range":["Low income","Poverty","Deep poverty"]
             }
         ],
 
@@ -280,6 +359,19 @@ class TrendLine {
                                         ]
                                     }
                                 }
+                            },
+                            {
+                                "type": "rule",
+                                "encode": {
+                                    "update":{
+                                        "x": {"signal":"round(scale('x',indexYear))", "offset":0.5},
+                                        "x2": {"signal":"round(scale('x',indexYear))", "offset":0.5},
+                                        "y": {"signal":"range('y')[0]"},
+                                        "y2": {"signal":"range('y')[1]"},
+                                        "stroke": {"value":"#0a355b"},
+                                        "opacity": {"signal":"isactive ? 1 : 0"}
+                                    }
+                                }
                             }
                         ]
                     },
@@ -294,11 +386,13 @@ class TrendLine {
                                 "fontWeight":{"value":"normal"},
                                 "x":{"field":"year", "scale":"x"},
                                 "y":{"field":"value", "scale":"y"},
+                                "opacity":{"signal":"datum.year == indexYear ? 1 : 0"},
                                 "text":{"signal":"datum.label"},
                                 "baseline":{"value":"middle"},
-                                "align":{"signal":"datum.year == 1980 ? 'right' : 'left'"},
-                                "dx":{"signal":"datum.year == 1980 ? -6 : 6"},
-                                "angle":{"signal":"datum.year == 1980 ? 0 : 0"}
+                                "align":{"signal":"datum.year == 1980 ? 'left' : 'left'"},
+                                "dx":{"signal":"datum.year == 1980 ? 6 : 6"},
+                                "dy":{"signal":"datum.year == 1980 ? -2 : -2"},
+                                "angle":{"signal":"datum.year == 1980 ? -33 : -33"}
                             }
                         }
                     },
@@ -311,11 +405,56 @@ class TrendLine {
                                 "fontWeight":{"field":"fontWeight"},
                                 "x":{"field":"x"},
                                 "y":{"field":"y"},
+                                "opacity":{"field":"opacity"},
                                 "text":{"field":"text"},
                                 "baseline":{"field":"baseline"},
                                 "align":{"field":"align"},
                                 "angle":{"field":"angle"},
                                 "dx":{"field":"dx"},
+                                "dy":{"field":"dy"},
+                                "fill":{"value":"#ffffff"},
+                                "stroke":{"value":"#ffffff"},
+                                "strokeWidth":{"value":2}
+                            }
+                        }
+                    },
+                    {
+                        "type":"text",
+                        "name":"anno_series",
+                        "from":{"data":"series_label"},
+                        "zindex":10,
+                        "encode":{
+
+                            "update":{
+                                "fontWeight":{"value":"normal"},
+                                "fontSize":{"value":13},
+                                "x":{"field":"year", "scale":"x"},
+                                "y":{"field":"value", "scale":"y"},
+                                "text":{"signal":"datum.label"},
+                                "baseline":{"value":"middle"},
+                                "align":{"value":"right"},
+                                "dx":{"value":-6},
+                                "dy":{"value":0},
+                                "angle":{"value":0}
+                            }
+                        }
+                    },
+                    {
+                        "type":"text",
+                        "from":{"data":"anno_series"},
+                        "zindex":9,
+                        "encode":{
+                            "update":{
+                                "fontWeight":{"field":"fontWeight"},
+                                "fontSize":{"field":"fontSize"},
+                                "x":{"field":"x"},
+                                "y":{"field":"y"},
+                                "text":{"field":"text"},
+                                "baseline":{"field":"baseline"},
+                                "align":{"field":"align"},
+                                "angle":{"field":"angle"},
+                                "dx":{"field":"dx"},
+                                "dy":{"field":"dy"},
                                 "fill":{"value":"#ffffff"},
                                 "stroke":{"value":"#ffffff"},
                                 "strokeWidth":{"value":2}
@@ -333,7 +472,6 @@ class TrendLine {
                         "grid":false,
                         "domain":false,
                         "ticks":false,
-                        "offset":5,
                         "encode":{
                             "grid":{
                                 "update":{
@@ -344,6 +482,7 @@ class TrendLine {
                             "labels":{
                                 "update":{
                                     "text":[
+                                        {"test":"isactive", "signal":'datum.value === indexYear ? datum.value : ""'},
                                         {"test":"is_narrow", "signal": 'datum.value % 10 == 0 ? datum.value : ""'},
                                         {"signal": 'datum.value % 10 == 0 ? datum.value : "\'" + substring(toString(datum.value),2)'}
                                     ],
@@ -361,7 +500,7 @@ class TrendLine {
                         "format":",.0f", 
                         "tickCount":4, 
                         "ticks":false, 
-                        "offset":5,
+                        "offset":0,
                         "encode":{
                             "grid":{
                                 "update":{

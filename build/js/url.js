@@ -1,7 +1,7 @@
 //dev
-let url = {root: "root_url"}
+let url = {root: "https://www.childtrends.org/cta-uploads/child-poverty-by-state/"}
 
-url.root = "./";
+//url.root = "./";
 
 url.assets = url.root + "assets/";
 url.json = url.assets;

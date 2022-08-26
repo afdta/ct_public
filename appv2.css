@@ -1,70 +1,78 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,700;1,400&display=swap');
 
-
-
-
-p{
+#interactive-data p{
     font-family: 'Montserrat', sans-serif;
     line-height: 1.5em;
     margin:0rem 0rem 1rem 0rem;
     font-size:16px;
+    color: #272727;
 }
 
-h2{
+#interactive-data h2{
     font-family: 'Montserrat', sans-serif;
     line-height: 1.5em;
     margin:1rem 0rem 1rem 0rem;
-    font-size:25px;   
+    font-size:25px;
+    color: #272727;   
 }
 
-b{
+#interactive-data b{
     font-family: inherit;
+    color:inherit;
     font-weight:700;
 }
 
-a{
+#interactive-data a{
     color:#962573;
     font-family:inherit;
     text-decoration: none;
     border-bottom:1px solid #962573;
 }
 
-text{
+#interactive-data i{
+    font-style:italic;
+    margin-top:1.5em;
+    font-size:0.9em;
+    display:block;
+    color:inherit;
+}
+
+#interactive-data text{
     font-family: 'Montserrat', sans-serif;
 }
 
-div{
+#interactive-data div{
     box-sizing: border-box;
 }
 
-.flex-container{
+#interactive-data .flex-container{
     display:flex;
     flex-wrap:wrap;
     justify-content: space-between;
     align-items: flex-start;
 }
 
-.flex-container.flex-50 > div{
+#interactive-data .flex-container.flex-50 > div{
     width:48%;
     position:relative;
 }
 
-.c-fix:after{
+#interactive-data .c-fix:after{
     display:table;
     content:"";
     clear:both;
 }
 
-.flex-container.chart-wrapper{
+#interactive-data .flex-container.chart-wrapper{
     flex-wrap: nowrap;
     margin-bottom:3rem;
 }
 
-.flex-container.chart-wrapper > div{
+#interactive-data .flex-container.chart-wrapper > div{
     width:32%;
 }
 
-.flex-container.chart-wrapper > div:first-child{
+#interactive-data .flex-container.chart-wrapper > div:first-child{
     width:65%;
     padding:15px 10px;
     background-color:#f0f0f0;
@@ -72,36 +80,36 @@ div{
     border-radius:5px;
 }
 
-.flex-container > div.full-span{
+#interactive-data .flex-container > div.full-span{
     width:100%;
 }
 
 /*big chart has different proportions*/
-.flex-container.chart-wrapper.big-chart{
+#interactive-data .flex-container.chart-wrapper.big-chart{
     width:100%;
 }
 
-.flex-container.chart-wrapper.big-chart > div{
+#interactive-data .flex-container.chart-wrapper.big-chart > div{
     width:25%;
 }
 
-.flex-container.chart-wrapper.big-chart > div:first-child{
+#interactive-data .flex-container.chart-wrapper.big-chart > div:first-child{
     width:73%;
 }
 
-.role-axis .role-axis-grid line{
+#interactive-data .role-axis .role-axis-grid line{
     shape-rendering: crispEdges;
 }
 
-select{
+#interactive-data select{
     margin-bottom:-1px;
     border:1px solid #111111;
 }
 
-#controls{
+#interactive-data #controls{
     margin:1rem 0rem 2rem 0rem;
     position:sticky;
-    top:0px;
+    top:110px;
     left:0px;
     background:#ffffff;
     z-index:10;
@@ -109,8 +117,8 @@ select{
     border-bottom:1px solid #111111;
 }
 
-@media screen and (max-width: 950px) {
-    .flex-container.flex-50 > div{
+@media screen and (max-width: 1100px) {
+    #interactive-data .flex-container.flex-50 > div{
         width: 100%;
     }
   }

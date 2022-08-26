@@ -12,6 +12,9 @@ import { select } from "d3";
     let container1 = container0.append("div").attr("class","flex-container flex-50");
     let container2 = container0.append("div").attr("class","flex-container flex-50");
     let container3 = container0.append("div").attr("class","flex-container flex-50");
+
+    container1.append("div").classed("full-span",true)
+        .html("<h2>Trends in child poverty rates measured by Supplemental Poverty Measure, by level</h2>")
     
     container2.append("div").classed("full-span",true)
         .html("<h2>Economic, labor market, and demographic trends that may be related to changes in child poverty</h2>")
@@ -47,6 +50,7 @@ import { select } from "d3";
         });
 
         function update(){
+            console.log("chart update")
             charts.forEach(pkg => {
                 let state = [];
                 let us = [];
@@ -55,7 +59,7 @@ import { select } from "d3";
                 if(pkg.indicator == "poverty_x3"){
                     state = (DATA.poverty[current_state]).concat(DATA.low_income[current_state], DATA.deep_poverty[current_state]);
                     us = (DATA.poverty.US).concat(DATA.low_income.US, DATA.deep_poverty.US);
-                    extra_pad = 70;
+                    extra_pad = 85;
                 }
                 else{
                     state = DATA[pkg.indicator][current_state];
@@ -71,6 +75,12 @@ import { select } from "d3";
 
         //initialize
         update();
+
+        let resize_timer;
+        window.addEventListener("resize", () => {
+            clearTimeout(resize_timer);
+            resize_timer = setTimeout(update,250);
+        });
 
         let controls = select("#controls");
         let dropdown = controls.append("select").style("font-size","18px").style("padding","5px 10px");

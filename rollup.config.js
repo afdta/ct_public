@@ -4,7 +4,7 @@ export default {
   input: './build/js/main.js',
   output: {
     format: 'iife',
-    file: './assets/app-es6.js'
+    file: './assets/app-es6v2.js'
   },
   plugins: [resolve({mainFields:['module', 'browser', 'main']})]
 };

@@ -2,9 +2,9 @@
     'use strict';
 
     //dev
-    let url = {root: "root_url"};
+    let url = {root: "https://www.childtrends.org/cta-uploads/child-poverty-by-state/"};
 
-    url.root = "./";
+    //url.root = "./";
 
     url.assets = url.root + "assets/";
     url.json = url.assets;
@@ -42,7 +42,7 @@
         finally{
             var s=document.createElement("script");
             var s0=document.getElementsByTagName("script")[0];
-            s.src= modern ? root + "app-es6.js" : root + "app-es5.js";
+            s.src= modern ? root + "app-es6v2.js" : root + "app-es5v2.js";
             s.type="text/javascript";
             s0.parentNode.insertBefore(s,s0);
         }
