@@ -42,7 +42,7 @@
         finally{
             var s=document.createElement("script");
             var s0=document.getElementsByTagName("script")[0];
-            s.src= modern ? root + "app-es6v2.js" : root + "app-es5v2.js";
+            s.src= modern ? root + "app-es6v2dot1.js" : root + "app-es5v2dot1.js";
             s.type="text/javascript";
             s0.parentNode.insertBefore(s,s0);
         }

@@ -8,6 +8,8 @@ import { select } from "d3";
     let meta = json(url.assets + "metadata.json");
     let alldata = json(url.assets + "all_data.json");
     let container0 = select("#chart-wrapper");
+
+    let err_note = container0.append("p").style("display","none");
     
     let container1 = container0.append("div").attr("class","flex-container flex-50");
     let container2 = container0.append("div").attr("class","flex-container flex-50");
@@ -50,7 +52,6 @@ import { select } from "d3";
         });
 
         function update(){
-            console.log("chart update")
             charts.forEach(pkg => {
                 let state = [];
                 let us = [];
@@ -93,6 +94,9 @@ import { select } from "d3";
             current_state = this.value;
             update();
         });
+    }).catch(err => {
+        err_note.style("display","block").text("Failed to retrieve data. Please refresh the page.");
+        console.log(err);
     })
 
     

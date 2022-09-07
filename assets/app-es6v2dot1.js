@@ -45831,7 +45831,6 @@
           this.view.resize();
 
           this.definition.html("<p>" + definition + "</p>");
-   
       }
 
       clear(){
@@ -45840,13 +45839,15 @@
 
       data(data_table){
           this.view.resize();
-          this.view.data("table", data_table).runAsync();
+          this.view.data("table", data_table);
+          this.view.runAsync();
           return this;
       }
 
       signal(signal_name, value){
           this.view.resize();
-          this.view.signal(signal_name, value).runAsync();
+          this.view.signal(signal_name, value);
+          this.view.runAsync();
       }
 
       //structured this way for ease of editing spec prior to initialization in the constructor above
@@ -45953,16 +45954,33 @@
                   ]
               },
               {
+                  "name":"indexRule",
+                  "value":0,
+                  "update":"round(scale('x',indexYear))"
+              },
+              {
+                  "name":"yeardomain",
+                  "value":0,
+                  "update":"domain('x')"
+              },
+              {
                   "name": "isactive",
-                  "update": "false",
+                  "value": false,
                   "on": [
                     {
+                      "events": "mouseover",
+                      "update": "true",
+                      "marktype":"rect"
+                    },
+                    {
                       "events": "mousemove",
-                      "update": "true"
+                      "update": "true",
+                      "marktype":"rect"
                     },
                     {
                       "events": "mouseout",
-                      "update": "false"
+                      "update": "false",
+                      "marktype":"rect"
                     }
                   ]
               }
@@ -45971,7 +45989,7 @@
           "data":[
               {
                   "name": "table",
-                  "values": [{"value":1, "year":1900}, {"value":2, "year":1901}]
+                  "values": []
               },
               {
                   "name": "anno_table",
@@ -46016,7 +46034,7 @@
                   "zero": false,
                   "padding": 0,
                   "range": [{"signal":"extra_pad"}, {"signal":"width-20"}],
-                  "domain": {"data": "table", "field": "year"}
+                  "domain": {"data": "table", "field": "year", "sort":true}
               },
               {
                   "name": "x_linear",
@@ -46115,7 +46133,7 @@
                                       "update": {
                                           "x": {"scale": "x", "field": "year"},
                                           "y": {"scale": "y", "field": "value"},
-                                          "size": {"value":25},
+                                          "size": {"signal":"isactive && datum.year == indexYear ? 60 : 25"},
                                           "fill": [
                                               {"test":"datum.state_abbr == 'US'", "value":"#007cc2"},
                                               {"value":"#0a355b"}
@@ -46131,8 +46149,8 @@
                                   "type": "rule",
                                   "encode": {
                                       "update":{
-                                          "x": {"signal":"round(scale('x',indexYear))", "offset":0.5},
-                                          "x2": {"signal":"round(scale('x',indexYear))", "offset":0.5},
+                                          "x": {"signal":"indexRule", "offset":0.5},
+                                          "x2": {"signal":"indexRule", "offset":0.5},
                                           "y": {"signal":"range('y')[0]"},
                                           "y2": {"signal":"range('y')[1]"},
                                           "stroke": {"value":"#0a355b"},
@@ -47244,6 +47262,8 @@
       let meta = json(url.assets + "metadata.json");
       let alldata = json(url.assets + "all_data.json");
       let container0 = select$1("#chart-wrapper");
+
+      let err_note = container0.append("p").style("display","none");
       
       let container1 = container0.append("div").attr("class","flex-container flex-50");
       let container2 = container0.append("div").attr("class","flex-container flex-50");
@@ -47286,7 +47306,6 @@
           });
 
           function update(){
-              console.log("chart update");
               charts.forEach(pkg => {
                   let state = [];
                   let us = [];
@@ -47329,6 +47348,9 @@
               current_state = this.value;
               update();
           });
+      }).catch(err => {
+          err_note.style("display","block").text("Failed to retrieve data. Please refresh the page.");
+          console.log(err);
       });
 
       
