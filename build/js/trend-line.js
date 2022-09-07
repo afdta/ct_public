@@ -64,6 +64,8 @@ class TrendLine {
         this.view.resize();
 
         this.definition.html("<p>" + definition + "</p>");
+
+        //this.view.addSignalListener("isactive", (a,b) => console.log("Is active: " + b)); 
     }
 
     clear(){
@@ -203,17 +205,17 @@ class TrendLine {
                   {
                     "events": "mouseover",
                     "update": "true",
-                    "marktype":"rect"
+                    "markname":"touchpad"
                   },
                   {
                     "events": "mousemove",
                     "update": "true",
-                    "marktype":"rect"
+                    "markname":"touchpad"
                   },
                   {
                     "events": "mouseout",
                     "update": "false",
-                    "marktype":"rect"
+                    "markname":"touchpad"
                   }
                 ]
             }
@@ -478,6 +480,22 @@ class TrendLine {
                                 "strokeWidth":{"value":2}
                             }
                         }
+                    },
+                    {
+                        "name":"touchpad",
+                        "type":"rect",
+                        "zindex":100,
+                        "encode":{
+                            "enter":{
+                                "fillOpacity":{"value":0}
+                            },
+                            "update":{
+                                "width":{"signal":"width"},
+                                "height":{"signal":"height"},
+                                "x":{"value":0},
+                                "y":{"value":0}
+                            }
+                        }
                     }
                 ],
                 "axes": [
@@ -500,9 +518,13 @@ class TrendLine {
                             "labels":{
                                 "update":{
                                     "text":[
-                                        {"test":"isactive", "signal":'datum.value === indexYear ? datum.value : ""'},
+                                        {"test":"isactive && datum.value == indexYear", "signal":"datum.value"},
                                         {"test":"is_narrow", "signal": 'datum.value % 10 == 0 ? datum.value : ""'},
                                         {"signal": 'datum.value % 10 == 0 ? datum.value : "\'" + substring(toString(datum.value),2)'}
+                                    ],
+                                    "opacity":[
+                                        {"test":"isactive && datum.value !== indexYear", "value":0},
+                                        {"value":1}
                                     ],
                                     "angle":{"signal":"is_narrow ? 0 : -45"},
                                     "align":{"signal":"is_narrow ? 'center' : 'right'"},
