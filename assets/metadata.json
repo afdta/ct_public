@@ -16,7 +16,7 @@
     "pov_reduction": "Child poverty reduction"
   },
   "definitions": {
-    "poverty_x3": "Children in households with resources below 100% of the <a href='https://www.childtrends.org/publications/lessons-from-a-historic-decline-in-child-poverty-how-poverty-is-measured-in-the-united-states'>Supplemental Poverty Measure (SPM)</a> threshold are considered to live in poverty. Children below 50% of the threshold are considered in deep poverty. Children below 200% of the threshold are considered in low-income families.",
+    "poverty_x3": "Children in households with resources below 100% of the <a href='https://www.childtrends.org/publications/lessons-from-a-historic-decline-in-child-poverty-how-poverty-is-measured-in-the-united-states'>Supplemental Poverty Measure (SPM)</a> threshold are considered to live in poverty. Children below 50% of the threshold are considered in deep poverty. Children below 200% of the threshold are considered in low-income families.<i class='source-note hidden-note'>Note: Breaks in the trend lines reflect methodological changes in 2013 and 2017.</i>",
     "poverty": "Poverty",
     "low_income": "Low-income",
     "deep_poverty": "Deep poverty",
@@ -28,7 +28,7 @@
     "edu": "<b>Share of population with a high school degree<\/b> is the percentage of the population ages 25 and older with at least a high school degree or the equivalent. <i class='source-note'>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC<\/a> data<\/i>",
     "parent_01": "<b>Share of children living with less than two parents<\/b> is the percentage of children from birth to age 17 who live with one or no parents. <i class='source-note'>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC<\/a> data<\/i>",
     "teen_birth": "<b>Teen birth rate<\/b> is the number of births per 1,000 females ages 15-19. <i class='source-note'>Source: <a href='https://www.cdc.gov/nchs/data_access/VitalStatsOnline.htm'>Center for Disease Control<\/a><\/i>",
-    "pov_reduction": "The social safety net plays an important role in reducing child poverty. We present the percentage point reduction in child poverty rates after including the cash value of federal tax and transfer programs, over time, holding all else equal and assuming no behavioral changes. <i class='source-note'>Source: <a href='https://www.povertycenter.columbia.edu/historical-spm-data'>Child Trends' analysis of the Historical Supplemental Poverty Measure Data<\/a><\/i>"
+    "pov_reduction": "The social safety net plays an important role in reducing child poverty. We present the percentage point reduction in child poverty rates after including the cash value of federal tax and transfer programs, over time, holding all else equal and assuming no behavioral changes. <i class='source-note'>Source: <a href='https://www.povertycenter.columbia.edu/historical-spm-data'>Child Trends' analysis of the Historical Supplemental Poverty Measure Data<\/a><\/i><i class='source-note hidden-note'>Note: Breaks in the trend lines reflect methodological changes in 2013 and 2017.</i>"
   },
   "states": [
     {
