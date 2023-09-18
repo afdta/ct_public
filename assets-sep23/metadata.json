@@ -1,0 +1,392 @@
+{
+  "allvars": ["poverty_x3", "gdp_pc", "median_wage", "inequality", "urate", "f_lfp", "edu", "parent_01", "teen_birth", "pov_reduction"],
+  "varnames": {
+    "poverty_x3": "Child poverty levels",
+    "poverty": "Poverty",
+    "low_income": "Low income",
+    "deep_poverty": "Deep poverty",
+    "gdp_pc": "GDP per capita",
+    "median_wage": "Median wage",
+    "inequality": "Wage inequality",
+    "urate": "Unemployment rate",
+    "f_lfp": "Female labor force participation rate",
+    "edu": "Population with HS degree",
+    "parent_01": "Living with less than two parents",
+    "teen_birth": "Teen birth rate",
+    "pov_reduction": "Child poverty reduction (%)"
+  },
+  "definitions": {
+    "poverty_x3": "Children in households with resources below 100% of the <a href='https://www.childtrends.org/publications/lessons-from-a-historic-decline-in-child-poverty-how-poverty-is-measured-in-the-united-states'>Supplemental Poverty Measure (SPM)</a> threshold are considered to live in poverty. Children below 50% of the threshold are considered in deep poverty. Children below 200% of the threshold are considered in low-income families.<i class='source-note'>Note: Changes to the data source used in this graph in 2014 (applying to data for 2013 forward) and 2018 (applying to data for 2017 forward) mean child poverty rates are not directly comparable over time. For more information, see our <a href='https://www.childtrends.org/publications/an-additional-note-about-methodology'> methods documentation.</i>",
+    "poverty": "Poverty",
+    "low_income": "Low-income",
+    "deep_poverty": "Deep poverty",
+    "gdp_pc": "<b>Gross Domestic Product (GDP) per capita<\/b> is the state’s GDP divided by its population. All estimates are in thousands of 2019 dollars. <i class='source-note'>Source: <a href='https://fred.stlouisfed.org/categories/27281'>FRED<\/a><\/i>",
+    "median_wage": "<b>Real median wage<\/b> is the wage at the 50th percentile of the state’s income distribution. Estimates are in 2019 dollars. <i class='source-note'>Source: Constructed from <a href='https://www.nber.org/research/data/current-population-survey-cps-merged-outgoing-rotation-group-earnings-data'>CPS MORG<\/a> data<\/i>",
+    "inequality": "<b>Wage inequality<\/b> is the ratio of wages in the 90th percentile of the wage distribution to those in the 10th percentile. <i class='source-note'>Source: Constructed from <a href='https://www.nber.org/research/data/current-population-survey-cps-merged-outgoing-rotation-group-earnings-data'>CPS MORG<\/a> data<\/i>",
+    "urate": "<b>The unemployment rate<\/b> is the percentage of the labor force ages 16 and older that is unemployed and looking for a job. <i class='source-note'>Source: <a href='https://www.bls.gov/sae/'>BLS<\/a><\/i>",
+    "f_lfp": "<b>Female labor force participation<\/b> is the percentage of women ages 16-64 who are employed or looking for work. <i class='source-note'>Source: <a href='https://www.bls.gov/opub/reports/womens-databook/2020/home.htm'>BLS<\/a><\/i>",
+    "edu": "<b>Share of population with a high school degree<\/b> is the percentage of the population ages 25 and older with at least a high school degree or the equivalent. <i class='source-note'>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC<\/a> data<\/i>",
+    "parent_01": "<b>Share of children living with less than two parents<\/b> is the percentage of children from birth to age 17 who live with one or no parents. <i class='source-note'>Source: Constructed from <a href='https://cps.ipums.org/cps/'>CPS-ASEC<\/a> data<\/i>",
+    "teen_birth": "<b>Teen birth rate<\/b> is the number of births per 1,000 females ages 15-19. <i class='source-note'>Source: <a href='https://www.cdc.gov/nchs/data_access/VitalStatsOnline.htm'>Center for Disease Control<\/a><\/i>",
+    "pov_reduction": "The social safety net plays an important role in reducing child poverty. We present the percent reduction in child poverty rates after including the cash value of federal tax and transfer programs, over time, holding all else equal and assuming no behavioral changes. <i class='source-note'>Source: <a href='https://www.povertycenter.columbia.edu/historical-spm-data'>Child Trends' analysis of the Historical Supplemental Poverty Measure Data<\/a><\/i><i class='source-note'>Note: Changes to the data source used in this graph in 2014 (applying to data for 2013 forward) and 2018 (applying to data for 2017 forward) mean child poverty rates are not directly comparable over time. For more information, see our <a href='https://www.childtrends.org/publications/an-additional-note-about-methodology'> methods documentation.</i>"
+  },
+  "states": [
+    {
+      "fips": "01",
+      "usps": "AL",
+      "name": "Alabama",
+      "region": "South",
+      "region2": "East South Central"
+    },
+    {
+      "fips": "02",
+      "usps": "AK",
+      "name": "Alaska",
+      "region": "West",
+      "region2": "Pacific"
+    },
+    {
+      "fips": "04",
+      "usps": "AZ",
+      "name": "Arizona",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "05",
+      "usps": "AR",
+      "name": "Arkansas",
+      "region": "South",
+      "region2": "West South Central"
+    },
+    {
+      "fips": "06",
+      "usps": "CA",
+      "name": "California",
+      "region": "West",
+      "region2": "Pacific"
+    },
+    {
+      "fips": "08",
+      "usps": "CO",
+      "name": "Colorado",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "09",
+      "usps": "CT",
+      "name": "Connecticut",
+      "region": "Northeast",
+      "region2": "New England"
+    },
+    {
+      "fips": "10",
+      "usps": "DE",
+      "name": "Delaware",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "11",
+      "usps": "DC",
+      "name": "District of Columbia",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "12",
+      "usps": "FL",
+      "name": "Florida",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "13",
+      "usps": "GA",
+      "name": "Georgia",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "15",
+      "usps": "HI",
+      "name": "Hawaii",
+      "region": "West",
+      "region2": "Pacific"
+    },
+    {
+      "fips": "16",
+      "usps": "ID",
+      "name": "Idaho",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "17",
+      "usps": "IL",
+      "name": "Illinois",
+      "region": "Midwest",
+      "region2": "East North Central"
+    },
+    {
+      "fips": "18",
+      "usps": "IN",
+      "name": "Indiana",
+      "region": "Midwest",
+      "region2": "East North Central"
+    },
+    {
+      "fips": "19",
+      "usps": "IA",
+      "name": "Iowa",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "20",
+      "usps": "KS",
+      "name": "Kansas",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "21",
+      "usps": "KY",
+      "name": "Kentucky",
+      "region": "South",
+      "region2": "East South Central"
+    },
+    {
+      "fips": "22",
+      "usps": "LA",
+      "name": "Louisiana",
+      "region": "South",
+      "region2": "West South Central"
+    },
+    {
+      "fips": "23",
+      "usps": "ME",
+      "name": "Maine",
+      "region": "Northeast",
+      "region2": "New England"
+    },
+    {
+      "fips": "24",
+      "usps": "MD",
+      "name": "Maryland",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "25",
+      "usps": "MA",
+      "name": "Massachusetts",
+      "region": "Northeast",
+      "region2": "New England"
+    },
+    {
+      "fips": "26",
+      "usps": "MI",
+      "name": "Michigan",
+      "region": "Midwest",
+      "region2": "East North Central"
+    },
+    {
+      "fips": "27",
+      "usps": "MN",
+      "name": "Minnesota",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "28",
+      "usps": "MS",
+      "name": "Mississippi",
+      "region": "South",
+      "region2": "East South Central"
+    },
+    {
+      "fips": "29",
+      "usps": "MO",
+      "name": "Missouri",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "30",
+      "usps": "MT",
+      "name": "Montana",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "31",
+      "usps": "NE",
+      "name": "Nebraska",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "32",
+      "usps": "NV",
+      "name": "Nevada",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "33",
+      "usps": "NH",
+      "name": "New Hampshire",
+      "region": "Northeast",
+      "region2": "New England"
+    },
+    {
+      "fips": "34",
+      "usps": "NJ",
+      "name": "New Jersey",
+      "region": "Northeast",
+      "region2": "Middle Atlantic"
+    },
+    {
+      "fips": "35",
+      "usps": "NM",
+      "name": "New Mexico",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "36",
+      "usps": "NY",
+      "name": "New York",
+      "region": "Northeast",
+      "region2": "Middle Atlantic"
+    },
+    {
+      "fips": "37",
+      "usps": "NC",
+      "name": "North Carolina",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "38",
+      "usps": "ND",
+      "name": "North Dakota",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "39",
+      "usps": "OH",
+      "name": "Ohio",
+      "region": "Midwest",
+      "region2": "East North Central"
+    },
+    {
+      "fips": "40",
+      "usps": "OK",
+      "name": "Oklahoma",
+      "region": "South",
+      "region2": "West South Central"
+    },
+    {
+      "fips": "41",
+      "usps": "OR",
+      "name": "Oregon",
+      "region": "West",
+      "region2": "Pacific"
+    },
+    {
+      "fips": "42",
+      "usps": "PA",
+      "name": "Pennsylvania",
+      "region": "Northeast",
+      "region2": "Middle Atlantic"
+    },
+    {
+      "fips": "44",
+      "usps": "RI",
+      "name": "Rhode Island",
+      "region": "Northeast",
+      "region2": "New England"
+    },
+    {
+      "fips": "45",
+      "usps": "SC",
+      "name": "South Carolina",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "46",
+      "usps": "SD",
+      "name": "South Dakota",
+      "region": "Midwest",
+      "region2": "West North Central"
+    },
+    {
+      "fips": "47",
+      "usps": "TN",
+      "name": "Tennessee",
+      "region": "South",
+      "region2": "East South Central"
+    },
+    {
+      "fips": "48",
+      "usps": "TX",
+      "name": "Texas",
+      "region": "South",
+      "region2": "West South Central"
+    },
+    {
+      "fips": "49",
+      "usps": "UT",
+      "name": "Utah",
+      "region": "West",
+      "region2": "Mountain"
+    },
+    {
+      "fips": "50",
+      "usps": "VT",
+      "name": "Vermont",
+      "region": "Northeast",
+      "region2": "New England"
+    },
+    {
+      "fips": "51",
+      "usps": "VA",
+      "name": "Virginia",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "53",
+      "usps": "WA",
+      "name": "Washington",
+      "region": "West",
+      "region2": "Pacific"
+    },
+    {
+      "fips": "54",
+      "usps": "WV",
+      "name": "West Virginia",
+      "region": "South",
+      "region2": "South Atlantic"
+    },
+    {
+      "fips": "55",
+      "usps": "WI",
+      "name": "Wisconsin",
+      "region": "Midwest",
+      "region2": "East North Central"
+    },
+    {
+      "fips": "56",
+      "usps": "WY",
+      "name": "Wyoming",
+      "region": "West",
+      "region2": "Mountain"
+    }
+  ]
+}
